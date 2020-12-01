@@ -7,13 +7,12 @@ import (
   "log"
   "math"
   "io/ioutil"
+  "path/filepath"
   "bufio"
   "strings"
   "math/rand"
   pb "github.com/Tarea1/Express/logistica"
 )
-
-func borrar (path string){}// borrar archivos de un path
 
 func split_chunks(titulo string)(int) { //https://www.socketloop.com/tutorials/golang-recombine-chunked-files-example
 
@@ -149,6 +148,37 @@ func join_chunks(titulo string,totalPartsNum int){
                 file.Close()
 }
 
+//https://flaviocopes.com/go-list-files/ funciones para mostrar libros a subir
+func visit(files *[]string) filepath.WalkFunc {
+    return func(path string, info os.FileInfo, err error) error {
+        if err != nil {
+            log.Fatal(err)
+        }
+        *files = append(*files, path)
+        return nil
+    }
+}
+func librosDisponibles (){ //tengo duda dee esto
+  var files []string
+    root := "./Libros/"
+    err := filepath.Walk(root, visit(&files))
+    if err != nil {
+        panic(err)
+    }
+    for _, file := range files {
+        fmt.Println(file)
+    }
+}
+
+func mostrarMenu() {
+  fmt.Println("Bienvenido Cliente!")
+  fmt.Println("Seleccione la acción que desea realizar:")
+  fmt.Println("1. Download")
+  fmt.Println("2. Upload")
+  fmt.Println("3. Salir")
+}
+
+
 func main() {
   //conexion
   var conn *grpc.ClientConn
@@ -159,8 +189,8 @@ func main() {
   defer conn.Close()
   //
 
+  //holamundo
   c := pb.NewLogisticaServiceClient(conn)
-
   message := pb.Message{
     Body: "Hello from the client!",
   }
@@ -168,7 +198,32 @@ func main() {
   if err!= nil{
     log.Fatalf("Error when calling SayHello: %s", err)
   }
-
-
-
+  //
+  var opcion int;
+  var flag_menu = true
+  var flag_upload = true
+  var algoritmoUp string
+  
+  for flag_menu {
+    mostrarMenu()
+    fmt.Scanln(&opcion)
+    if opcion == 2 {
+      fmt.Printf("Qué tipo de algoritmo de exclusión mutua desea utilizar? [0: Distribuido, 1: Centralizado]:")
+      fmt.Scanln(&flag_upload)
+      if flag_upload == 0 {
+        algoritmoUp = "distribuido"
+        } else if flag == 1 {
+          algoritmoUp = "centralizado"
+          }else {
+            log.Printf("Opción inválida")
+          }
+    }else if opcion == 1{
+      fmt.Println("A descargar chicos!!")
+      //leer registro name node
+    }else if opcion == 3 {
+      flag_menu = false
+    }else {
+      fmt.Println("Ingrese una opción válida")
+    }
+  }
 }
