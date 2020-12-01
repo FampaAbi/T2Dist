@@ -59,7 +59,7 @@ func split_chunks(titulo string)(int) { //https://www.socketloop.com/tutorials/g
                 // write/save buffer to disk
                 ioutil.WriteFile(fileName, partBuffer, os.ModeAppend)
 
-                fmt.Println("Split to : ", fileName)
+                //fmt.Println("Split to : ", fileName)
         }
         return int(totalPartsNum)
   }
@@ -267,7 +267,7 @@ func main() {
         fmt.Scanln(&opcionUp)
 
         address := searchAvailableNode(conn)
-        fmt.Scanln(address)
+        fmt.Println(address)
         conn, err := grpc.Dial(address, grpc.WithInsecure())
         if err != nil {
           fmt.Println("did not connect: %v", err)
