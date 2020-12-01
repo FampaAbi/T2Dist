@@ -9,9 +9,10 @@ import (
   "io/ioutil"
   "path/filepath"
   "bufio"
-  //"golang.org/x/net/context"
+  "golang.org/x/net/context"
   "google.golang.org/grpc"
-  //pb "github.com/T2Dist/logistica"
+  pb "Tareita2/logistica"
+
 )
 
 func split_chunks(titulo string)(int) { //https://www.socketloop.com/tutorials/golang-recombine-chunked-files-example
@@ -31,7 +32,7 @@ func split_chunks(titulo string)(int) { //https://www.socketloop.com/tutorials/g
 
         var fileSize int64 = fileInfo.Size()
 
-        const fileChunk = 250000 // 1 MB, change this to your requirement
+        const fileChunk = 256000 // 1 MB, change this to your requirement
 
         // calculate total number of parts the file will be chunked into
 
@@ -197,40 +198,36 @@ func mostrarMenu() {
 
 
 
-func searchAvailableNode() string {
-  port := "9000" // 
+func searchAvailableNode(conn *grpc.ClientConn) string { //agregar sayhello
+  port := "9000" //
   for i := 61; i < 64; i++ {
-    address := "dist" + strconv.Itoa(i) + port
-    conn, err := grpc.Dial(addres, grpc.WithInsecure())
+    address := "dist" + strconv.Itoa(i) +":"+ port
+    conn, err := grpc.Dial(address, grpc.WithInsecure())
     if err != nil {
       fmt.Println(err)
-      defer conn.Close() 
-    } else {
-      defer conn.Close() 
+    }
+    defer conn.Close()
+
+    message := pb.HelloRequest{
+      Mensaje: "Hello from cliente",
+    }
+    c := pb.NewLogisticaServiceClient(conn)
+    response, err := c.SayHello(context.Background(),&message)
+    if err!= nil{
+      fmt.Println("Error al conectar: DataNode ",i," no disponible" )
+    }else{
+      log.Printf("Response from DataNode: %s", response.Mensaje)
       fmt.Println("DataNode", i, "en línea")
       return address
     }
-    return ""
   }
-    
-      /*
-      if i == 53 && status == 1 {
-        fmt.Println("DataNode 53 en línea")
-        return address
-      } else if i == 54 && status == 1 {
-        fmt.Println("DataNode 54 en línea")
-        return address
-      } else if i == 55 && status == 1 {
-        fmt.Println("DataNode 55 en línea")
-        return address
-      }
-      */
+  return ""
 }
 
 func getChunks(book_name string, total_partes int) [][]byte {
-  retorno := []
+  var retorno [][]byte
   root := "./SplitBooks/"
-  for (i := 1; i < total_partes + 1; i++) {
+  for i := 1; i < total_partes + 1; i++ {
     file, err := os.Open(root + book_name + "_" + strconv.Itoa(i))
 	  if err != nil {
 		log.Fatal(err)
@@ -239,7 +236,7 @@ func getChunks(book_name string, total_partes int) [][]byte {
 	  if err != nil {
 		  fmt.Println("Error!:", err)
 	  }
-    *retorno = append(*retorno, content) //posible error
+    retorno = append(retorno, content) //posible error
   }
   return retorno
 }
@@ -248,28 +245,10 @@ func getChunks(book_name string, total_partes int) [][]byte {
 func main() {
   //conexion
   var conn *grpc.ClientConn
-  conn, err := grpc.Dial(":9000", grpc.WithInsecure())
-  if err != nil{
-    log.Fatalf("could not connect: %s", err)
-  }
-  defer conn.Close()
-  //
-
-  //holamundo
-  //c := pb.NewLogisticaServiceClient(conn)
-  //message := pb.Message{
-  //  Body: "Hello from the client!",
-  //}
-  //response, err := c.SayHello(context.Background(),&message)
-  //if err!= nil{
-  //  log.Fatalf("Error when calling SayHello: %s", err)
-  //}
   //
   var opcion int;
   var opcionUp int;
   var inMenu = true
-
-  //var algoritmoUp string
 
   for inMenu {
     mostrarMenu()
@@ -282,21 +261,13 @@ func main() {
           inUpload = false
         } else {
           partes := split_chunks(tituloUP)
-        lista_de_bytes = getChunks(tituloUP, partes)
+        lista_de_bytes := getChunks(tituloUP, partes)
 
         fmt.Printf("Qué tipo de algoritmo de exclusión mutua desea utilizar? [0: Distribuido, 1: Centralizado]:")
         fmt.Scanln(&opcionUp)
-        if opcionUp == 0 {
-          fmt.Println("Distribuido")
-          } else if opcionUp == 1 {
-            fmt.Println("Centralizado")
-            
-            } else {
-              log.Printf("Opción inválida")
-            }
 
-        address := searchAvailableNode()
-        fmt.Println(address)
+        address := searchAvailableNode(conn)
+
         conn, err := grpc.Dial(address, grpc.WithInsecure())
         if err != nil {
           fmt.Println("did not connect: %v", err)
@@ -304,16 +275,16 @@ func main() {
         defer conn.Close()
 
         c := pb.NewLogisticaServiceClient(conn)
-        estadito, _ := c.subirLibro(context.Background(), &pb.Libro{
+        estadito, _ := c.SubirLibro(context.Background(), &pb.Libro{
           Titulo: tituloUP,
-          Length: partes,
+          Length: int32(partes),
           Chunks: lista_de_bytes,
           Ip: address,
-          Algoritmo: 
+          Algoritmo: int32(opcionUp),
         })
         fmt.Println("Respuesta:", estadito)
         }
-        
+
       }
     } else if opcion == 1{
       fmt.Println("A descargar chicos!!")
