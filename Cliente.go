@@ -32,7 +32,7 @@ func split_chunks(titulo string)(int) { //https://www.socketloop.com/tutorials/g
 
         var fileSize int64 = fileInfo.Size()
 
-        const fileChunk = 256000 // 1 MB, change this to your requirement
+        const fileChunk = 250000 // 1 MB, change this to your requirement
 
         // calculate total number of parts the file will be chunked into
 
