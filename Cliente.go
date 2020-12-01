@@ -9,9 +9,9 @@ import (
   "io/ioutil"
   "path/filepath"
   "bufio"
-  "strings"
-  "math/rand"
-  pb "github.com/Tarea1/Express/logistica"
+  //"golang.org/x/net/context"
+  "google.golang.org/grpc"
+  //pb "github.com/T2Dist/logistica"
 )
 
 func split_chunks(titulo string)(int) { //https://www.socketloop.com/tutorials/golang-recombine-chunked-files-example
@@ -37,7 +37,7 @@ func split_chunks(titulo string)(int) { //https://www.socketloop.com/tutorials/g
 
         totalPartsNum := uint64(math.Ceil(float64(fileSize) / float64(fileChunk)))
 
-        fmt.Printf("Splitting to %d pieces.\n", totalPartsNum)
+        fmt.Printf("Separando en %d partes.\n", totalPartsNum)
 
         for i := uint64(0); i < totalPartsNum; i++ {
 
@@ -47,7 +47,7 @@ func split_chunks(titulo string)(int) { //https://www.socketloop.com/tutorials/g
                 file.Read(partBuffer)
 
                 // write to disk
-                fileName := "./SplitBooks/"+archivo+"_" + strconv.FormatUint(i+1, 10)
+                fileName := "./SplitBooks/"+titulo+"_" + strconv.FormatUint(i+1, 10)
                 _, err := os.Create(fileName)
 
                 if err != nil {
@@ -85,7 +85,7 @@ func join_chunks(titulo string,totalPartsNum int){
           var writePosition int64 = 0
           for j := uint64(0); j < uint64(totalPartsNum); j++ {
             //read a chunk
-            currentChunkFileName := "./ChunksDownload/"+archivo+"_"+strconv.FormatUint(j+1, 10)
+            currentChunkFileName := "./ChunksDownload/"+titulo+"_"+strconv.FormatUint(j+1, 10)
 
             newFileChunk, err := os.Open(currentChunkFileName)
 
@@ -154,21 +154,30 @@ func visit(files *[]string) filepath.WalkFunc {
         if err != nil {
             log.Fatal(err)
         }
-        *files = append(*files, path)
+        *files = append(*files, info.Name())
         return nil
     }
 }
-func librosDisponibles (){ //tengo duda dee esto
+func librosUpload () string{
   var files []string
     root := "./Libros/"
     err := filepath.Walk(root, visit(&files))
     if err != nil {
         panic(err)
     }
+    var i int
+    var libro int
+	  i = 0
+    fmt.Println("Seleccione el libro que desea subir:")
     for _, file := range files {
-        fmt.Println(file)
+        if i !=0{
+          fmt.Println(i, ".", file)
+        }
+        i++
     }
-}
+    fmt.Scanln(&libro)
+    return files[libro]
+} //retorna el libro
 
 func mostrarMenu() {
   fmt.Println("Bienvenido Cliente!")
@@ -190,38 +199,46 @@ func main() {
   //
 
   //holamundo
-  c := pb.NewLogisticaServiceClient(conn)
-  message := pb.Message{
-    Body: "Hello from the client!",
-  }
-  response, err := c.SayHello(context.Background(),&message)
-  if err!= nil{
-    log.Fatalf("Error when calling SayHello: %s", err)
-  }
+  //c := pb.NewLogisticaServiceClient(conn)
+  //message := pb.Message{
+  //  Body: "Hello from the client!",
+  //}
+  //response, err := c.SayHello(context.Background(),&message)
+  //if err!= nil{
+  //  log.Fatalf("Error when calling SayHello: %s", err)
+  //}
   //
   var opcion int;
-  var flag_menu = true
-  var flag_upload = true
-  var algoritmoUp string
-  
-  for flag_menu {
+  var opcionUp int;
+  var inMenu = true
+
+  //var algoritmoUp string
+
+  for inMenu {
     mostrarMenu()
     fmt.Scanln(&opcion)
     if opcion == 2 {
-      fmt.Printf("Qué tipo de algoritmo de exclusión mutua desea utilizar? [0: Distribuido, 1: Centralizado]:")
-      fmt.Scanln(&flag_upload)
-      if flag_upload == 0 {
-        algoritmoUp = "distribuido"
-        } else if flag == 1 {
-          algoritmoUp = "centralizado"
-          }else {
-            log.Printf("Opción inválida")
-          }
+      var inUpload = true
+      for inUpload {
+       tituloUP := librosUpload()
+       split_chunks(tituloUP)
+       fmt.Printf("Qué tipo de algoritmo de exclusión mutua desea utilizar? [0: Distribuido, 1: Centralizado, 2:Salir]:")
+       fmt.Scanln(&opcionUp)
+       if opcionUp == 0 {
+         fmt.Println("distribuido")
+         } else if opcionUp == 1 {
+           fmt.Println("Centralizado")
+           }else if opcionUp == 2 {
+             inUpload= false
+           }else {
+             log.Printf("Opción inválida")
+           }
+      }
     }else if opcion == 1{
       fmt.Println("A descargar chicos!!")
       //leer registro name node
     }else if opcion == 3 {
-      flag_menu = false
+      inMenu = false
     }else {
       fmt.Println("Ingrese una opción válida")
     }
