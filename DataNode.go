@@ -1,16 +1,16 @@
 package main
 
 import (
-  "os"
-  "strconv"
+  //"os"
+  //"strconv"
   "fmt"
   "log"
-  "math"
-  "io/ioutil"
-  "path/filepath"
-  "bufio"
+  //"math"
+  //"io/ioutil"
+  //"path/filepath"
+  //"bufio"
   "golang.org/x/net/context"
-  "google.golang.org/grpc"
+  //"google.golang.org/grpc"
   pb "Tareita2/logistica"
 
 )
@@ -31,7 +31,11 @@ func main() {
   //defer conn.Close()
 
   //c := pb.NewLogisticaServiceClient(conn)
+  var inListening = true
+  fmt.Println("Datanode encendido")
+for inListening{
 
-fmt.Println("Datanode encendido")
+}
+
 
 }
