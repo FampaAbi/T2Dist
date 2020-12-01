@@ -55,3 +55,74 @@ message Estado {
 message Seguir {
   int32 seguimiento = 1;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+service AlgunNombre {
+    rpc SayHello(HelloRequest) returns (HelloReply) {}
+    rpc SubirLibro (Libro) returns (SubirLibroReply) {}
+}
+
+message Chunks{
+    string Chunk = 1;
+}
+
+message Libro {
+    string Titulo = 1;
+    int Length = 2;
+    repeated bytes Chunks = 3;
+    string Ip = 4;
+}
+
+message SubirLibroReply {
+    int Status = 1;
+}
+
+message HelloRequest{
+    string Mensaje = 1;
+}
+
+message HelloReply{
+    string Mensaje = 1;
+}

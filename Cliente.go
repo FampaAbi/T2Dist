@@ -158,7 +158,8 @@ func visit(files *[]string) filepath.WalkFunc {
         return nil
     }
 }
-func librosUpload () string{
+
+func librosUpload() string{
   var files []string
     root := "./Libros/"
     err := filepath.Walk(root, visit(&files))
@@ -175,7 +176,14 @@ func librosUpload () string{
         }
         i++
     }
+    fmt.Println(i, ". Salir")
     fmt.Scanln(&libro)
+    if libro == i {
+      return "exit"
+    } else if libro > i || libro < 1 {
+      fmt.Println("Opcion invalida, hazlo bien sapo culiao")
+      return librosUpload()
+    }
     return files[libro]
 } //retorna el libro
 
@@ -185,6 +193,55 @@ func mostrarMenu() {
   fmt.Println("1. Download")
   fmt.Println("2. Upload")
   fmt.Println("3. Salir")
+}
+
+
+
+func searchAvailableNode() string {
+  port := "9000" // 
+  for i := 61; i < 64; i++ {
+    address := "dist" + strconv.Itoa(i) + port
+    conn, err := grpc.Dial(addres, grpc.WithInsecure())
+    if err != nil {
+      fmt.Println(err)
+      defer conn.Close() 
+    } else {
+      defer conn.Close() 
+      fmt.Println("DataNode", i, "en línea")
+      return address
+    }
+    return ""
+  }
+    
+      /*
+      if i == 53 && status == 1 {
+        fmt.Println("DataNode 53 en línea")
+        return address
+      } else if i == 54 && status == 1 {
+        fmt.Println("DataNode 54 en línea")
+        return address
+      } else if i == 55 && status == 1 {
+        fmt.Println("DataNode 55 en línea")
+        return address
+      }
+      */
+}
+
+func getChunks(book_name string, total_partes int) [][]byte {
+  retorno := []
+  root := "./SplitBooks/"
+  for (i := 1; i < total_partes + 1; i++) {
+    file, err := os.Open(root + book_name + "_" + strconv.Itoa(i))
+	  if err != nil {
+		log.Fatal(err)
+	  }
+    content, err := ioutil.ReadAll(file)
+	  if err != nil {
+		  fmt.Println("Error!:", err)
+	  }
+    *retorno = append(*retorno, content) //posible error
+  }
+  return retorno
 }
 
 
@@ -220,26 +277,50 @@ func main() {
     if opcion == 2 {
       var inUpload = true
       for inUpload {
-       tituloUP := librosUpload()
-       split_chunks(tituloUP)
-       fmt.Printf("Qué tipo de algoritmo de exclusión mutua desea utilizar? [0: Distribuido, 1: Centralizado, 2:Salir]:")
-       fmt.Scanln(&opcionUp)
-       if opcionUp == 0 {
-         fmt.Println("distribuido")
-         } else if opcionUp == 1 {
-           fmt.Println("Centralizado")
-           }else if opcionUp == 2 {
-             inUpload= false
-           }else {
-             log.Printf("Opción inválida")
-           }
+        tituloUP := librosUpload()
+        if tituloUP == "exit" {
+          inUpload = false
+        } else {
+          partes := split_chunks(tituloUP)
+        lista_de_bytes = getChunks(tituloUP, partes)
+
+        fmt.Printf("Qué tipo de algoritmo de exclusión mutua desea utilizar? [0: Distribuido, 1: Centralizado]:")
+        fmt.Scanln(&opcionUp)
+        if opcionUp == 0 {
+          fmt.Println("Distribuido")
+          } else if opcionUp == 1 {
+            fmt.Println("Centralizado")
+            
+            } else {
+              log.Printf("Opción inválida")
+            }
+
+        address := searchAvailableNode()
+        fmt.Println(address)
+        conn, err := grpc.Dial(address, grpc.WithInsecure())
+        if err != nil {
+          fmt.Println("did not connect: %v", err)
+        }
+        defer conn.Close()
+
+        c := pb.NewLogisticaServiceClient(conn)
+        estadito, _ := c.subirLibro(context.Background(), &pb.Libro{
+          Titulo: tituloUP,
+          Length: partes,
+          Chunks: lista_de_bytes,
+          Ip: address,
+          Algoritmo: 
+        })
+        fmt.Println("Respuesta:", estadito)
+        }
+        
       }
-    }else if opcion == 1{
+    } else if opcion == 1{
       fmt.Println("A descargar chicos!!")
       //leer registro name node
-    }else if opcion == 3 {
+    } else if opcion == 3 {
       inMenu = false
-    }else {
+    } else {
       fmt.Println("Ingrese una opción válida")
     }
   }
