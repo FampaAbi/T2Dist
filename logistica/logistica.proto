@@ -1,0 +1,57 @@
+syntax = "proto3";
+package logistica;
+
+message Message {
+  string body = 1;
+}
+
+service LogisticaService {
+  rpc SayHello(Message) returns (Message) {}
+  rpc GenerarOrden(Orden) returns (NroSeguimiento) {}
+  rpc GetPackage(Camion) returns (PaqueteMSG) {}
+  rpc UpdateEstado(Estado) returns (Message) {}
+  rpc SeguirPaquete(Seguir) returns (Estado) {}
+}
+
+message NroSeguimiento{
+  int32 numeroSeguimiento = 1;
+}
+
+message Orden {
+    string IDPaquete = 1;
+    int32 tipo = 2;
+    string nombre = 3;
+    int32 valor = 4;
+    string origen = 5;
+    string destino = 6;
+}
+
+message Camion {
+    int32 IDCamion = 1;
+    string Tipo = 2;
+    //string estado = 5;
+
+}
+message PaqueteMSG {
+  string IDPaquete = 1;
+  int32 seguimiento = 2;
+  string tipo = 3;
+  int32 valor = 4;
+  int32 intentos = 5;
+  //string estado = 5;
+  string origen = 6;
+  string destino = 7;
+  //string fecha_entrega = 9;
+  int32 flagxd = 8;
+
+}
+
+message Estado {
+  string estado = 1;
+  int32 seguimiento = 2;
+  int32 intentos = 3;
+}
+
+message Seguir {
+  int32 seguimiento = 1;
+}
