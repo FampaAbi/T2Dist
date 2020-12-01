@@ -26,7 +26,7 @@ func(s *Papi) SayHello(ctx context.Context, message *pb.HelloRequest) (*pb.Hello
 
 func(s *Papi) SubirLibro(ctx context.Context, dataLibro *pb.Libro) (*pb.SubirLibroReply,error){
   i := len(dataLibro.GetChunks())
-  return &pb.SubirLibroReply{Status:i}, nil
+  return &pb.SubirLibroReply{Status:int32(i)}, nil
 }
 
 func main() {
