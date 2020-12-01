@@ -14,6 +14,7 @@ import (
   pb "Tareita2/logistica"
 
 )
+
 type Papi struct{
 }
 
@@ -23,19 +24,25 @@ func(s *Papi) SayHello(ctx context.Context, message *pb.HelloRequest) (*pb.Hello
 }
 
 func main() {
-  //var conn *grpc.ClientConn
-  //conn, err := grpc.Dial(":9000", grpc.WithInsecure())
-  //if err != nil{
-  //  log.Fatalf("could not connect: %s", err)
-  //}
-  //defer conn.Close()
-
-  //c := pb.NewLogisticaServiceClient(conn)
-  var inListening = true
   fmt.Println("Datanode encendido")
-for inListening{
+  lis,err := net.Listen("tcp",":9000")
+  if err!= nil {
+    log.Fatalf("Failed to listen on port 9000: %v", err)
+  }
 
-}
+  s := Papi{}
+  s.numeroSeguimiento = 0
+
+  grpcServer:= grpc.NewServer()
+
+  pb.RegisterLogisticaServiceServer(grpcServer, &s)
+
+  if err := grpcServer.Serve(lis); err!=nil{
+    log.Fatalf("Failed to serve gRPC server over port 9000: %v", err)
+  }
+
+
+
 
 
 }
