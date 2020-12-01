@@ -261,13 +261,13 @@ func main() {
           inUpload = false
         } else {
           partes := split_chunks(tituloUP)
-        lista_de_bytes := getChunks(tituloUP, partes)
+          lista_de_bytes := getChunks(tituloUP, partes)
 
         fmt.Printf("Qué tipo de algoritmo de exclusión mutua desea utilizar? [0: Distribuido, 1: Centralizado]:")
         fmt.Scanln(&opcionUp)
 
         address := searchAvailableNode(conn)
-
+        fmt.Scanln(address)
         conn, err := grpc.Dial(address, grpc.WithInsecure())
         if err != nil {
           fmt.Println("did not connect: %v", err)
