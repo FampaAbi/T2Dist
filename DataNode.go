@@ -5,12 +5,13 @@ import (
   //"strconv"
   "fmt"
   "log"
+  "net"
   //"math"
   //"io/ioutil"
   //"path/filepath"
   //"bufio"
   "golang.org/x/net/context"
-  //"google.golang.org/grpc"
+  "google.golang.org/grpc"
   pb "Tareita2/logistica"
 
 )
@@ -23,6 +24,10 @@ func(s *Papi) SayHello(ctx context.Context, message *pb.HelloRequest) (*pb.Hello
   return &pb.HelloReply{Mensaje: "Hello From DataNode!"}, nil
 }
 
+func(s *Papi) SubirLibro(ctx context.Context, message *pb.Libro) (*pb.SubirLibroReply,error){
+  return &pb.SubirLibroReply{}, nil
+}
+
 func main() {
   fmt.Println("Datanode encendido")
   lis,err := net.Listen("tcp",":9000")
@@ -31,7 +36,7 @@ func main() {
   }
 
   s := Papi{}
-  s.numeroSeguimiento = 0
+
 
   grpcServer:= grpc.NewServer()
 
