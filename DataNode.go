@@ -20,12 +20,13 @@ type Papi struct{
 }
 
 func(s *Papi) SayHello(ctx context.Context, message *pb.HelloRequest) (*pb.HelloReply,error){
-  log.Printf("Received message body from client: %s", message.Mensaje)
-  return &pb.HelloReply{Mensaje: "Hello From DataNode!"}, nil
+  log.Printf("Mensaje recibido del cliente: %s", message.Mensaje)
+  return &pb.HelloReply{Mensaje: "Estoy disponible!"}, nil
 }
 
-func(s *Papi) SubirLibro(ctx context.Context, message *pb.Libro) (*pb.SubirLibroReply,error){
-  return &pb.SubirLibroReply{}, nil
+func(s *Papi) SubirLibro(ctx context.Context, dataLibro *pb.Libro) (*pb.SubirLibroReply,error){
+  i := len(dataLibro.GetChunks())
+  return &pb.SubirLibroReply{Status:i}, nil
 }
 
 func main() {
@@ -45,9 +46,5 @@ func main() {
   if err := grpcServer.Serve(lis); err!=nil{
     log.Fatalf("Failed to serve gRPC server over port 9000: %v", err)
   }
-
-
-
-
 
 }

@@ -209,7 +209,7 @@ func searchAvailableNode(conn *grpc.ClientConn) string { //agregar sayhello
     defer conn.Close()
 
     message := pb.HelloRequest{
-      Mensaje: "Hello from cliente",
+      Mensaje: "Estas disponible?",
     }
     c := pb.NewLogisticaServiceClient(conn)
     response, err := c.SayHello(context.Background(),&message)
@@ -267,7 +267,7 @@ func main() {
         fmt.Scanln(&opcionUp)
 
         address := searchAvailableNode(conn)
-        fmt.Println(address)
+        //fmt.Println(address)
         conn, err := grpc.Dial(address, grpc.WithInsecure())
         if err != nil {
           fmt.Println("did not connect: %v", err)
