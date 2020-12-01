@@ -13,6 +13,7 @@ import (
   "google.golang.org/grpc"
   pb "Tareita2/logistica"
 
+
 )
 
 func split_chunks(titulo string)(int) { //https://www.socketloop.com/tutorials/golang-recombine-chunked-files-example
@@ -197,28 +198,42 @@ func mostrarMenu() {
 }
 
 
+func remove(s []int, i int) []int { //borrar de un array https://yourbasic.org/golang/delete-element-slice/
+    s[len(s)-1], s[i] = s[i], s[len(s)-1]
+    return s[:len(s)-1]
+}
 
-func searchAvailableNode(conn *grpc.ClientConn) string { //agregar sayhello
+func searchAvailableNode(conn *grpc.ClientConn) string {
   port := "9000" //
-  for i := 61; i < 64; i++ {
-    address := "dist" + strconv.Itoa(i) +":"+ port
-    conn, err := grpc.Dial(address, grpc.WithInsecure())
-    if err != nil {
-      fmt.Println(err)
-    }
-    defer conn.Close()
-
-    message := pb.HelloRequest{
-      Mensaje: "Estas disponible?",
-    }
-    c := pb.NewLogisticaServiceClient(conn)
-    response, err := c.SayHello(context.Background(),&message)
-    if err!= nil{
-      fmt.Println("Error al conectar: DataNode ",i," no disponible" )
+  opciones = [61,62,63] //datanode
+  var inLoop = true
+  for inLoop {
+    n := len(opciones)
+    if n ==0{
+      inLoop = false
     }else{
-      log.Printf("Response from DataNode: %s", response.Mensaje)
-      fmt.Println("DataNode", i, "en línea")
-      return address
+      n_random= rand.Intn(n)
+      random := opciones[n_random]
+      address := "dist" + strconv.Itoa(random) +":"+ port
+      opciones = remove(opciones, n_random)
+      conn, err := grpc.Dial(address, grpc.WithInsecure())
+      if err != nil {
+        fmt.Println(err)
+      }
+      defer conn.Close()
+
+      message := pb.HelloRequest{
+        Mensaje: "Estas disponible?",
+      }
+      c := pb.NewLogisticaServiceClient(conn)
+      response, err := c.SayHello(context.Background(),&message)
+      if err!= nil{
+        fmt.Println("Error al conectar: DataNode ",random," no disponible" )
+      }else{
+        log.Printf("Response from DataNode: %s", response.Mensaje)
+        fmt.Println("DataNode", random, "en línea")
+        return address
+      }
     }
   }
   return ""
