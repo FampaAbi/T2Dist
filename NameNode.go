@@ -85,13 +85,14 @@ func(s *Papi) MandarPropuestaName(ctx context.Context, propuesta *pb2.PropuestaN
 func(s *Papi) MandarLog(ctx context.Context, LogMsg *pb2.LogMsg) (*pb2.ReplyLogMsg, error) {
 
   nombre_libro := LogMsg.GetNombreLibro()
-  s.librosDisponibles = append(s.librosDisponibles,nombre_libro)
+
   cantidad_partes := LogMsg.GetCantidadPartes()
   parte := LogMsg.GetParte()
   ip := LogMsg.GetIpMaquina()
   esPrimero := LogMsg.GetEsPrimero()
   if esPrimero {
     s.libro++
+    s.librosDisponibles = append(s.librosDisponibles,nombre_libro)
   }
 
   libro_actual := strconv.Itoa(s.libro)
