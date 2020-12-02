@@ -1,6 +1,7 @@
 package main
 
 import (
+  "strings"
   "time"
   "os"
   "strconv"
@@ -378,7 +379,8 @@ func main() {
       }
     } else if opcion == 1{
       fmt.Println("Elija un libro a descargar:")
-      titulos,cantidad_partes,_,direcciones := verDisponibilidadLibros()
+      titulos,cantidad_partes,subtitulos,direcciones := verDisponibilidadLibros()
+      base := 0
       if len(titulos) != 0{
         var que_libro int
         fmt.Scanln(&que_libro)
@@ -386,10 +388,15 @@ func main() {
         if que_libro < 0 || que_libro > len(titulos) {
           fmt.Println("Opcion inválida")
         }else {
+          for i := 0; i < que_libro; i++ {
+             base += int(cantidad_partes[i])
+          }
           for i := 0; i < int(cantidad_partes[que_libro-1]); i++ {
-            fmt.Println("IP: ",direcciones[i])
-            fmt.Println("Title: ",title+"_"+strconv.Itoa(i+1))
-            get_chunks(direcciones[i],title+"_"+strconv.Itoa(i+1))
+            parte := strings.Split(subtitulos[i + base], "_")[2]
+            fmt.Println("IP: ",direcciones[i + base])
+            fmt.Println("Title: ",subtitulos[i + base])
+            get_chunks(direcciones[i+ base],title+"_"+parte)
+
           }
           join_chunks(title,int(cantidad_partes[que_libro-1]))
           fmt.Println("Libro descargado correctamente")
