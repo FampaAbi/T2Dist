@@ -388,13 +388,14 @@ func main() {
         if que_libro < 0 || que_libro > len(titulos) {
           fmt.Println("Opcion inválida")
         }else {
-          for i := 0; i < que_libro; i++ {
+          for i := 0; i < que_libro-1; i++ {
              base += int(cantidad_partes[i])
           }
           for i := 0; i < int(cantidad_partes[que_libro-1]); i++ {
             parte := strings.Split(subtitulos[i + base], "_")[2]
             fmt.Println("IP: ",direcciones[i + base])
-            fmt.Println("Title: ",subtitulos[i + base])
+            fmt.Println("Title: ",title+"_"+parte)
+            fmt.Println("Parte: ",parte)
             get_chunks(direcciones[i+ base],title+"_"+parte)
 
           }
