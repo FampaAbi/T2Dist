@@ -59,9 +59,7 @@ func(s *Papi) SayHello(ctx context.Context, message *pb.HelloRequest) (*pb.Hello
 
 func distribuirChunks(propuesta []string, libro [][]byte, titulo string, address string, cantidad int32){
   fmt.Println("Se comienza a distribuir los chunks")
-  fmt.Println("Len(libro): ",len(libro))
-  fmt.Println("Len(Propuesta): ",len(propuesta))
-  fmt.Println("loquesobra: ",len(libro) % len(propuesta))
+
 
   loquesobra := len(libro) % len(propuesta)
   cuantas_cada_uno := (len(libro)-loquesobra) / len(propuesta) //cuantas para cada nodo
@@ -88,7 +86,6 @@ func distribuirChunks(propuesta []string, libro [][]byte, titulo string, address
   }
 }
 
-
 func(s *Papi) MandarChunk(ctx context.Context, SendChunk *pb.SendChunk) (*pb.ReplySendChunk, error) {
   titulo := SendChunk.GetTitulo()
   chunk := SendChunk.GetChunk()
@@ -110,7 +107,7 @@ func EnviarChunk(address string, chunk []byte, titulo string, parte int) {
   }
   defer conn.Close()
   c := pb.NewLogisticaServiceClient(conn)
-  fmt.Println("Enviando chunk a '", address,"''")
+  fmt.Println("Enviando chunk a '", address,"'")
   estadito, _ := c.MandarChunk(context.Background(), &pb.SendChunk{
     //campos que se enviaran entre dataNodes
     Titulo: titulo,
@@ -148,7 +145,7 @@ func EscribirEnNameNode(titulo string, parte int, address string, cantidad int32
 
 func(s *Papi) SubirLibro(ctx context.Context, dataLibro *pb.Libro) (*pb.SubirLibroReply,error){ // recibe info del libro y sus chunks
   //longitud := 3
-
+  
   //fmt.Println("Respuesta Len de partes DataNode:", i)
   titulo := dataLibro.GetTitulo();
   cantidad := dataLibro.GetLength(); // cuantas partes se dividio
@@ -178,7 +175,7 @@ func(s *Papi) SubirLibro(ctx context.Context, dataLibro *pb.Libro) (*pb.SubirLib
     }
 
   }else{ // algoritmo distribuido
-    fmt.Println("lolerio")
+
   }
   return &pb.SubirLibroReply{Status:cantidad}, nil //Devuelve el largo del array de chunks recibidos
 }

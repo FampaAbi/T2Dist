@@ -107,6 +107,7 @@ func escribirEnLog(nombre_libro string, cantidad_partes string, parte string, ip
   if _, err := file.WriteString("parte_"+libro_actual+"_"+parte+" "+ip+"\n"); err != nil {
     log.Fatal(err)
   }
+  fmt.Println("Se registró correctamente la parte ",strconv.Itoa(parte)," del libro ",nombre_libro," en el LOG")
 }
 
 func main() {
