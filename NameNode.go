@@ -127,6 +127,7 @@ func main() {
 
   s := Papi{}
   s.libro = 0
+  s.librosDisponibles = []string{}
 
   grpcServer:= grpc.NewServer()
 
