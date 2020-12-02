@@ -59,6 +59,10 @@ func(s *Papi) SayHello(ctx context.Context, message *pb.HelloRequest) (*pb.Hello
 
 func distribuirChunks(propuesta []string, libro [][]byte, titulo string, address string, cantidad int32){
   fmt.Println("Se comienza a distribuir los chunks")
+  fmt.Println("Len(libro): ",len(libro))
+  fmt.Println("Len(Propuesta): ",len(propuesta))
+  fmt.Println("loquesobra: ",len(libro) % len(propuesta))
+  fmt.Println("cuantocadauno: ",(len(libro)-loquesobra) / len(propuesta))
   loquesobra := len(libro) % len(propuesta)
   cuantas_cada_uno := (len(libro)-loquesobra) / len(propuesta) //cuantas para cada nodo
   index := cuantas_cada_uno * len(propuesta) //las que se reparten inicialmente
@@ -166,7 +170,7 @@ func(s *Papi) SubirLibro(ctx context.Context, dataLibro *pb.Libro) (*pb.SubirLib
     })
 
     if estadito.GetReplyName() == 1 {// 1 : prop anterior 0: sacar nueva propuesta
-      fmt.Println("Se aceptó la propuesta en el NameNode")
+      fmt.Println("Se aceptó la propuesta en el NameNode, se realizará:", prop)
       distribuirChunks(prop, chunks, titulo, address, cantidad)
     } else {
       fmt.Println("Se rechazó la propuesta en el NameNode, se realizará: ",estadito.GetNuevaProp())
