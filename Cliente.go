@@ -276,7 +276,7 @@ func main() {
         } else {
           partes := split_chunks(tituloUP) //separa el libro en chunks y devuelve el total de partes
           lista_de_bytes := agruparChunks(tituloUP, partes) //mete todos los chunks en un array
-  
+
         fmt.Printf("Qué tipo de algoritmo de exclusión mutua desea utilizar? [0: Distribuido, 1: Centralizado]:")
         fmt.Scanln(&opcionUp)
 

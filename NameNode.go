@@ -21,7 +21,6 @@ type Papi struct{ //struct que maneja la info general de la logistica (EL PAPI)
   libro int
 }
 
-
 func remove(s []string, i int) []string { //borrar de un array https://yourbasic.org/golang/delete-element-slice/
   s[len(s)-1], s[i] = s[i], s[len(s)-1]
   return s[:len(s)-1]
@@ -48,18 +47,16 @@ func AceptaroRechazar() bool {
   return true
 }
 
-
-
 func(s *Papi) MandarPropuestaName(ctx context.Context, propuesta *pb2.PropuestaName) (*pb2.ReplyPropuestaName,error){
   largo_propuesta := len(propuesta.GetPropuesta())
-  believer := propuesta.GetPropuesta()
+  believer := propuesta.GetPropuesta() //propuesta
 
   if largo_propuesta != 1 {
-    if AceptaroRechazar() {
+    if AceptaroRechazar() { //acepta
       var temp []string
       temp = append(temp,"")
       return &pb2.ReplyPropuestaName{ReplyName: 1 , NuevaProp: temp }, nil
-    } else {
+    } else { //rechaza
       if largo_propuesta > 2 {
         nueva_prop := generarPropuesta(believer, 2)
         return &pb2.ReplyPropuestaName{ReplyName: 0, NuevaProp: nueva_prop}, nil
@@ -68,7 +65,7 @@ func(s *Papi) MandarPropuestaName(ctx context.Context, propuesta *pb2.PropuestaN
         return &pb2.ReplyPropuestaName{ReplyName: 0, NuevaProp: nueva_prop}, nil
       }
     }
-  } else {
+  } else { // si la propuesta es de largo 1 siempre se acepta
     var temp []string
     temp = append(temp,"")
     return &pb2.ReplyPropuestaName{ReplyName: 1 , NuevaProp: temp }, nil
@@ -95,9 +92,6 @@ func(s *Papi) MandarLog(ctx context.Context, LogMsg *pb2.LogMsg) (*pb2.ReplyLogM
   escribirEnLog(nombre_libro,cantidad_partes, parte,ip, esPrimero, libro_actual)
   return &pb2.ReplyLogMsg{Recibido: true}, nil
 }
-
-
-
 
 func escribirEnLog(nombre_libro string, cantidad_partes string, parte string, ip string, esPrimero bool, libro_actual string) {
 

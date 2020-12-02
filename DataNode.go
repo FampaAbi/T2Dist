@@ -20,10 +20,10 @@ import (
 type Papi struct{
 }
 
-func generarPropuesta(address string, longitud int) []string {
+func generarPropuesta(/*address string, longitud int*/) []string {
   port := "9000" //
   var retorno []string
-  retorno = append(retorno,address)
+  //retorno = append(retorno,address)
   for i := 61; i < 64; i++ {
     address := "dist" + strconv.Itoa(i) +":"+ port
     conn, err := grpc.Dial(address, grpc.WithInsecure())
@@ -33,7 +33,7 @@ func generarPropuesta(address string, longitud int) []string {
     defer conn.Close()
 
     message := pb.HelloRequest{
-      Mensaje: "Estas disponible?",
+      Mensaje: "Estas disponible para recibir distribucion de chunks?",
     }
     c := pb.NewLogisticaServiceClient(conn)
     response , err := c.SayHello(context.Background(),&message)
@@ -42,9 +42,9 @@ func generarPropuesta(address string, longitud int) []string {
     }else{
       fmt.Println(response)
       fmt.Println("DataNode", i, "en línea")
-      if len(retorno) != longitud {
+      /*if len(retorno) != longitud {
         retorno = append(retorno, address)
-      }
+      }*/
 
     }
 
@@ -58,9 +58,10 @@ func(s *Papi) SayHello(ctx context.Context, message *pb.HelloRequest) (*pb.Hello
 }
 
 func distribuirChunks(propuesta []string, libro [][]byte, titulo string, address string, cantidad int32){
-  cuantas_cada_uno := len(libro) / len(propuesta)
+  fmt.Println("Se comienza a distribuir los chunks")
   loquesobra := len(libro) % len(propuesta)
-  index := cuantas_cada_uno * len(propuesta)
+  cuantas_cada_uno := (len(libro)-loquesobra) / len(propuesta) //cuantas para cada nodo
+  index := cuantas_cada_uno * len(propuesta) //las que se reparten inicialmente
   cont := 0
   for j := 0; j < len(propuesta) ; j++ {
     for i := 0; i < cuantas_cada_uno; i++ {
@@ -87,9 +88,9 @@ func distribuirChunks(propuesta []string, libro [][]byte, titulo string, address
 func(s *Papi) MandarChunk(ctx context.Context, SendChunk *pb.SendChunk) (*pb.ReplySendChunk, error) {
   titulo := SendChunk.GetTitulo()
   chunk := SendChunk.GetChunk()
-  //parte  := SendChunk.GetParte()
+  parte  := SendChunk.GetParte()
 
-  _, err := os.Create("Partes/" + titulo)
+  _, err := os.Create("Partes/" + titulo+"_"+strconv.Itoa(int(parte)))
   if err != nil {
 		os.Exit(1)
   }
@@ -105,17 +106,22 @@ func EnviarChunk(address string, chunk []byte, titulo string, parte int) {
   }
   defer conn.Close()
   c := pb.NewLogisticaServiceClient(conn)
+  fmt.Println("Enviando chunk a '", address,"''")
   estadito, _ := c.MandarChunk(context.Background(), &pb.SendChunk{
     //campos que se enviaran entre dataNodes
     Titulo: titulo,
     Chunk: chunk,
     Parte: int32(parte),
   })
-  fmt.Println("Recibido?:", estadito.GetStatus())
+  if estadito.GetStatus(){
+    fmt.Println("Chunk enviado con éxito")
+  }else{
+    fmt.Println("Ocurrió un problema en el envío del chunk")
+  }
+
 }
 
-
-func EscribirEnNameNode(titulo string, chunk int, address string, cantidad int32, esPrimero bool)  {
+func EscribirEnNameNode(titulo string, parte int, address string, cantidad int32, esPrimero bool)  {
   conn, err := grpc.Dial("dist64:9000", grpc.WithInsecure())
   if err != nil {
     fmt.Println("did not connect: %v", err)
@@ -125,26 +131,29 @@ func EscribirEnNameNode(titulo string, chunk int, address string, cantidad int32
   estadito, _ := c.MandarLog(context.Background(), &pb2.LogMsg{
     NombreLibro: titulo,
     CantidadPartes: strconv.Itoa(int(cantidad)),
-    Parte: strconv.Itoa(chunk),
+    Parte: strconv.Itoa(parte),
     IpMaquina: address,
     EsPrimero: esPrimero,
   })
-  fmt.Println("Recibido?:", estadito.GetRecibido())
+  if estadito.GetRecibido(){
+    fmt.Println("Se registró correctamente la parte ",strconv.Itoa(parte)," del libro ",titulo," en el LOG")
+  }
+
 
 }
 
 func(s *Papi) SubirLibro(ctx context.Context, dataLibro *pb.Libro) (*pb.SubirLibroReply,error){ // recibe info del libro y sus chunks
-  longitud := 3
-  i := len(dataLibro.GetChunks())
-  fmt.Println("Respuesta Len de partes DataNode:", i)
+  //longitud := 3
+
+  //fmt.Println("Respuesta Len de partes DataNode:", i)
   titulo := dataLibro.GetTitulo();
-  cantidad := dataLibro.GetLength();
+  cantidad := dataLibro.GetLength(); // cuantas partes se dividio
   chunks := dataLibro.GetChunks();
   algoritmo := dataLibro.GetAlgoritmo() // 0:distribuido 1:centralizado
   address := dataLibro.GetIp() // ip de maquina actual
 
   if algoritmo == 1 {
-    prop := generarPropuesta(address,longitud)
+    prop := generarPropuesta(/*address,longitud*/)
     conn, err := grpc.Dial("dist64:9000", grpc.WithInsecure())
     if err != nil {
       fmt.Println("did not connect: %v", err)
@@ -155,17 +164,19 @@ func(s *Papi) SubirLibro(ctx context.Context, dataLibro *pb.Libro) (*pb.SubirLib
     estadito, _ := c.MandarPropuestaName(context.Background(), &pb2.PropuestaName{
       Propuesta: prop,
     })
-    fmt.Println("Respuesta Propuesta:", estadito) // 1 : prop anterior 0: sacar nueva propuesta
-    if estadito.GetReplyName() == 1 {
+
+    if estadito.GetReplyName() == 1 {// 1 : prop anterior 0: sacar nueva propuesta
+      fmt.Println("Se aceptó la propuesta en el NameNode")
       distribuirChunks(prop, chunks, titulo, address, cantidad)
     } else {
+      fmt.Println("Se rechazó la propuesta en el NameNode, se realizará: ",estadito.GetNuevaProp())
       distribuirChunks(estadito.GetNuevaProp(), chunks, titulo, address, cantidad)
     }
 
   }else{ // algoritmo distribuido
     fmt.Println("lolerio")
   }
-  return &pb.SubirLibroReply{Status:int32(i)}, nil //Devuelve el largo del array de chunks recibidos
+  return &pb.SubirLibroReply{Status:cantidad}, nil //Devuelve el largo del array de chunks recibidos
 }
 
 func main() {
