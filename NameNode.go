@@ -8,9 +8,10 @@ import (
   "net"
   "math/rand"
   "errors"
+  "strings"
   //"io/ioutil"
   //"path/filepath"
-  //"bufio"
+  "bufio"
   "golang.org/x/net/context"
   "google.golang.org/grpc"
   pb2 "Tareita2/logisticaName"
@@ -19,12 +20,46 @@ import (
 )
 type Papi struct{ //struct que maneja la info general de la logistica (EL PAPI)
   libro int
-  librosDisponibles []string
 }
 
 func(s *Papi) Disponibilidad(ctx context.Context, message *pb2.Mensaje) (*pb2.ReplyDisponibilidad,error){
-  libros := s.librosDisponibles
-  return &pb2.ReplyDisponibilidad{Libros: libros}, nil
+  f, err := os.Open("LOG.txt")
+  if err != nil {
+    fmt.Println("Error al leer el archivo LOG")
+    return nil, errors.New("error")
+  }
+  defer f.Close()
+
+  titulos := []string{}     //estos dos arreglos estan relacionados
+  cant_partes := []int32{}
+
+  subtitulos := []string{}  //estos igual
+  direcciones := []string{}
+
+  scanner := bufio.NewScanner(f)
+
+  for scanner.Scan() {
+    if scanner.Text() != "" {
+      line := strings.Split(scanner.Text(), " ")
+
+      nombre_libro := line[0]
+      cantidad_partes, _ := strconv.Atoi(line[1])
+
+      titulos = append(titulos, nombre_libro)
+      cant_partes = append(cant_partes, int32(cantidad_partes))
+
+      for i := 0; i < cantidad_partes; i++ {
+        scanner.Scan()
+        linea := strings.Split(scanner.Text(), " ")
+        que_parte := linea[0]
+        ip_maquina := linea[1]
+
+        subtitulos = append(subtitulos, que_parte)
+        direcciones = append(direcciones, ip_maquina)
+      }
+    }
+  }
+  return &pb2.ReplyDisponibilidad{Titulos: titulos, CantidadPartes: cant_partes, Subtitulos: subtitulos,Address: direcciones},nil
 }
 
 func remove(s []string, i int) []string { //borrar de un array https://yourbasic.org/golang/delete-element-slice/
@@ -92,7 +127,7 @@ func(s *Papi) MandarLog(ctx context.Context, LogMsg *pb2.LogMsg) (*pb2.ReplyLogM
   esPrimero := LogMsg.GetEsPrimero()
   if esPrimero {
     s.libro++
-    s.librosDisponibles = append(s.librosDisponibles,nombre_libro)
+
   }
 
   libro_actual := strconv.Itoa(s.libro)
@@ -127,7 +162,7 @@ func main() {
 
   s := Papi{}
   s.libro = 0
-  s.librosDisponibles = []string{}
+  
 
   grpcServer:= grpc.NewServer()
 

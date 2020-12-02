@@ -21,7 +21,11 @@ message Mensaje{
 }
 
 message ReplyDisponibilidad {
-    repeated string Libros = 1;
+    repeated string Titulos = 1;
+    repeated int32 CantidadPartes = 2;
+    repeated string Subtitulos = 3;
+    repeated string Address = 4;
+
 }
 
 message LogMsg {

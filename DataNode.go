@@ -21,6 +21,22 @@ import (
 type Papi struct{
 }
 
+func(s *Papi) GetChunk(ctx context.Context, data *pb.Data) (*pb.ReplyChunk,error){ //verifica si el nodo esta encendido
+  titulo := data.Titulo
+  var chunk []byte
+  root := "./Partes/"
+  file, err := os.Open(root + titulo)
+  if err != nil {
+  log.Fatal(err)
+  }
+  content, err := ioutil.ReadAll(file)
+  if err != nil {
+    fmt.Println("Error!:", err)
+  }
+  chunk  = content
+  return &pb.ReplyChunk{Status: true,Chunk: chunk}, nil
+}
+
 func remove(s []string, i int) []string { //borrar de un array https://yourbasic.org/golang/delete-element-slice/
   s[len(s)-1], s[i] = s[i], s[len(s)-1]
   return s[:len(s)-1]

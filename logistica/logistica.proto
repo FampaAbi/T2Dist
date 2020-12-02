@@ -6,6 +6,16 @@ service LogisticaService {
     rpc SubirLibro (Libro) returns (SubirLibroReply) {}
     rpc MandarChunk (SendChunk) returns (ReplySendChunk) {}
     rpc MandarPropuesta (Propuesta) returns (ReplyPropuesta) {}
+    rpc GetChunk (Data) returns (ReplyChunk) {}
+}
+
+message Data{
+    string Titulo = 1;
+}
+
+message ReplyChunk{
+    bool Status = 1;
+    bytes Chunk = 2;
 }
 
 message Chunks{

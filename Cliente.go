@@ -17,6 +17,46 @@ import (
   pb2 "Tareita2/logisticaName"
 )
 
+func get_chunks(direccion string,titulo string) bool{
+  var conn *grpc.ClientConn
+  conn, err := grpc.Dial(direccion, grpc.WithInsecure())
+  if err != nil {
+    log.Fatalf("did not connect: %v", err)
+  }
+  defer conn.Close()
+  c := pb.NewLogisticaServiceClient(conn)
+  estadito, _ := c.GetChunk(context.Background(), &pb.Data{
+    Titulo: titulo,
+  })
+  if estadito.GetStatus(){
+    fmt.Println("Parte ", titulo," recuperada correctamente" )
+  }else{
+    fmt.Println("Ocurrió un problema recuperando ", titulo)
+  }
+  //dejarlos en chunks download
+  // write to disk
+  fileName := "./ChunksDownload/"+titulo
+  _, err1 := os.Create(fileName)
+  if err1 != nil {
+          fmt.Println(err)
+          os.Exit(1)
+  }
+  file, err2 := os.OpenFile(fileName, os.O_APPEND|os.O_WRONLY, os.ModeAppend)
+			if err2 != nil {
+				fmt.Println(err2)
+			} else {
+					_, err3 := file.Write(estadito.GetChunk())
+
+					if err3 != nil {
+						fmt.Println(err3)
+						os.Exit(1)
+					}
+					file.Sync()
+				  file.Close()
+			}
+  return true
+} // rescata un chunk de cierta address y lo deja en ./ChunksDownload
+
 func split_chunks(titulo string)(int) {
 
         fileToBeChunked := "./Libros/"+titulo // change here! path
@@ -256,8 +296,7 @@ func mostrarMenu() {
   fmt.Println("4. Salir")
 }
 
-
-func verDisponibilidadLibros() {
+func verDisponibilidadLibros() ([]string, []int32, []string, []string) {
   var conn *grpc.ClientConn
   conn, err := grpc.Dial("dist64:9000", grpc.WithInsecure())
 	if err != nil {
@@ -268,18 +307,21 @@ func verDisponibilidadLibros() {
   estadito, _ := c.Disponibilidad(context.Background(), &pb2.Mensaje{
     Mensaje: true,
   })
-  libros := estadito.GetLibros()
-  if len(libros) == 0{
+
+  titulos := estadito.GetTitulos()
+  cantidad_partes := estadito.GetCantidadPartes()
+  subtitulos := estadito.GetSubtitulos()
+  direcciones := estadito.GetAddress()
+
+  if len(titulos) == 0 {
     fmt.Println("No hay libros disponibles actualmente")
-  }else{
-    fmt.Println("El listado de libros disponibles es el siguiente:")
-    for index := 0; index < len(libros); index++ {
-      fmt.Println(index+1,". ",libros[index])
-    }
+    return titulos,cantidad_partes,subtitulos,direcciones
   }
-
+  for i := 0; i < len(titulos); i++ {
+    fmt.Println(i+1,".",titulos[i])
+  }
+  return titulos,cantidad_partes,subtitulos,direcciones
 }
-
 
 func main() {
   //conexion
@@ -332,8 +374,19 @@ func main() {
         }
       }
     } else if opcion == 1{
-      fmt.Println("A descargar chicos!!")
-      //leer registro name node
+      fmt.Println("Elija un libro a descargar:")
+      titulos,cantidad_partes,subtitulos,direcciones := verDisponibilidadLibros()
+      if len(titulos) != 0{
+        var que_libro int
+        fmt.Scanln(&que_libro)
+        if que_libro < 0 || que_libro >= len(titulos) {
+          fmt.Println("Opcion inválida")
+        }else {
+          for i := 0; i < int(cantidad_partes[que_libro-1]); i++ {
+            get_chunks(direcciones[i],subtitulos[i])
+          }
+        }
+      }
     } else if opcion == 4 {
       inMenu = false
     } else if opcion == 3 { // ver disponibilidad
