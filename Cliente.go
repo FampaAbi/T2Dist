@@ -168,9 +168,9 @@ func join_chunks(titulo string,totalPartsNum int){
                   // write/save buffer to disk
                   //ioutil.WriteFile(newFileName, chunkBufferBytes, os.ModeAppend)
 
-                  n, err := file.Write(chunkBufferBytes)
+                  _, err1 := file.Write(chunkBufferBytes)
 
-                  if err != nil {
+                  if err1 != nil {
                     fmt.Println(err)
                     os.Exit(1)
                   }
