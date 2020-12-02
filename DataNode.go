@@ -62,7 +62,7 @@ func distribuirChunks(propuesta []string, libro [][]byte, titulo string, address
   fmt.Println("Len(libro): ",len(libro))
   fmt.Println("Len(Propuesta): ",len(propuesta))
   fmt.Println("loquesobra: ",len(libro) % len(propuesta))
-  fmt.Println("cuantocadauno: ",(len(libro)-loquesobra) / len(propuesta))
+  
   loquesobra := len(libro) % len(propuesta)
   cuantas_cada_uno := (len(libro)-loquesobra) / len(propuesta) //cuantas para cada nodo
   index := cuantas_cada_uno * len(propuesta) //las que se reparten inicialmente
