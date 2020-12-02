@@ -136,6 +136,7 @@ func EscribirEnNameNode(titulo string, chunk int, address string, cantidad int32
 func(s *Papi) SubirLibro(ctx context.Context, dataLibro *pb.Libro) (*pb.SubirLibroReply,error){ // recibe info del libro y sus chunks
   longitud := 3
   i := len(dataLibro.GetChunks())
+  fmt.Println("Respuesta Len de partes DataNode:", i)
   titulo := dataLibro.GetTitulo();
   cantidad := dataLibro.GetLength();
   chunks := dataLibro.GetChunks();
@@ -154,7 +155,7 @@ func(s *Papi) SubirLibro(ctx context.Context, dataLibro *pb.Libro) (*pb.SubirLib
     estadito, _ := c.MandarPropuestaName(context.Background(), &pb2.PropuestaName{
       Propuesta: prop,
     })
-    fmt.Println("Respuesta:", estadito) // 1 : prop anterior 0: sacar nueva propuesta
+    fmt.Println("Respuesta Propuesta:", estadito) // 1 : prop anterior 0: sacar nueva propuesta
     if estadito.GetReplyName() == 1 {
       distribuirChunks(prop, chunks, titulo, address, cantidad)
     } else {
@@ -164,7 +165,7 @@ func(s *Papi) SubirLibro(ctx context.Context, dataLibro *pb.Libro) (*pb.SubirLib
   }else{ // algoritmo distribuido
     fmt.Println("lolerio")
   }
-  return &pb.SubirLibroReply{Status:int32(i)}, nil
+  return &pb.SubirLibroReply{Status:int32(i)}, nil //Devuelve el largo del array de chunks recibidos
 }
 
 func main() {
