@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.25.0
 // 	protoc        (unknown)
-// source: logistica/logisticaName.proto
+// source: logisticaName/logisticaName.proto
 
 package logisticaName
 
@@ -40,7 +40,7 @@ type PropuestaName struct {
 func (x *PropuestaName) Reset() {
 	*x = PropuestaName{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_logistica_logisticaName_proto_msgTypes[0]
+		mi := &file_logisticaName_logisticaName_proto_msgTypes[0]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -53,7 +53,7 @@ func (x *PropuestaName) String() string {
 func (*PropuestaName) ProtoMessage() {}
 
 func (x *PropuestaName) ProtoReflect() protoreflect.Message {
-	mi := &file_logistica_logisticaName_proto_msgTypes[0]
+	mi := &file_logisticaName_logisticaName_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -66,7 +66,7 @@ func (x *PropuestaName) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PropuestaName.ProtoReflect.Descriptor instead.
 func (*PropuestaName) Descriptor() ([]byte, []int) {
-	return file_logistica_logisticaName_proto_rawDescGZIP(), []int{0}
+	return file_logisticaName_logisticaName_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *PropuestaName) GetPropuesta() []string {
@@ -88,7 +88,7 @@ type ReplyPropuestaName struct {
 func (x *ReplyPropuestaName) Reset() {
 	*x = ReplyPropuestaName{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_logistica_logisticaName_proto_msgTypes[1]
+		mi := &file_logisticaName_logisticaName_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -101,7 +101,7 @@ func (x *ReplyPropuestaName) String() string {
 func (*ReplyPropuestaName) ProtoMessage() {}
 
 func (x *ReplyPropuestaName) ProtoReflect() protoreflect.Message {
-	mi := &file_logistica_logisticaName_proto_msgTypes[1]
+	mi := &file_logisticaName_logisticaName_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -114,7 +114,7 @@ func (x *ReplyPropuestaName) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ReplyPropuestaName.ProtoReflect.Descriptor instead.
 func (*ReplyPropuestaName) Descriptor() ([]byte, []int) {
-	return file_logistica_logisticaName_proto_rawDescGZIP(), []int{1}
+	return file_logisticaName_logisticaName_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *ReplyPropuestaName) GetReplyName() int32 {
@@ -127,6 +127,100 @@ func (x *ReplyPropuestaName) GetReplyName() int32 {
 func (x *ReplyPropuestaName) GetNuevaProp() []string {
 	if x != nil {
 		return x.NuevaProp
+	}
+	return nil
+}
+
+type Mensaje struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Mensaje bool `protobuf:"varint,1,opt,name=Mensaje,json=mensaje,proto3" json:"Mensaje,omitempty"`
+}
+
+func (x *Mensaje) Reset() {
+	*x = Mensaje{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_logisticaName_logisticaName_proto_msgTypes[2]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Mensaje) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Mensaje) ProtoMessage() {}
+
+func (x *Mensaje) ProtoReflect() protoreflect.Message {
+	mi := &file_logisticaName_logisticaName_proto_msgTypes[2]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Mensaje.ProtoReflect.Descriptor instead.
+func (*Mensaje) Descriptor() ([]byte, []int) {
+	return file_logisticaName_logisticaName_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *Mensaje) GetMensaje() bool {
+	if x != nil {
+		return x.Mensaje
+	}
+	return false
+}
+
+type ReplyDisponibilidad struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Libros []string `protobuf:"bytes,1,rep,name=Libros,json=libros,proto3" json:"Libros,omitempty"`
+}
+
+func (x *ReplyDisponibilidad) Reset() {
+	*x = ReplyDisponibilidad{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_logisticaName_logisticaName_proto_msgTypes[3]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ReplyDisponibilidad) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ReplyDisponibilidad) ProtoMessage() {}
+
+func (x *ReplyDisponibilidad) ProtoReflect() protoreflect.Message {
+	mi := &file_logisticaName_logisticaName_proto_msgTypes[3]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ReplyDisponibilidad.ProtoReflect.Descriptor instead.
+func (*ReplyDisponibilidad) Descriptor() ([]byte, []int) {
+	return file_logisticaName_logisticaName_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *ReplyDisponibilidad) GetLibros() []string {
+	if x != nil {
+		return x.Libros
 	}
 	return nil
 }
@@ -146,7 +240,7 @@ type LogMsg struct {
 func (x *LogMsg) Reset() {
 	*x = LogMsg{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_logistica_logisticaName_proto_msgTypes[2]
+		mi := &file_logisticaName_logisticaName_proto_msgTypes[4]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -159,7 +253,7 @@ func (x *LogMsg) String() string {
 func (*LogMsg) ProtoMessage() {}
 
 func (x *LogMsg) ProtoReflect() protoreflect.Message {
-	mi := &file_logistica_logisticaName_proto_msgTypes[2]
+	mi := &file_logisticaName_logisticaName_proto_msgTypes[4]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -172,7 +266,7 @@ func (x *LogMsg) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LogMsg.ProtoReflect.Descriptor instead.
 func (*LogMsg) Descriptor() ([]byte, []int) {
-	return file_logistica_logisticaName_proto_rawDescGZIP(), []int{2}
+	return file_logisticaName_logisticaName_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *LogMsg) GetNombreLibro() string {
@@ -221,7 +315,7 @@ type ReplyLogMsg struct {
 func (x *ReplyLogMsg) Reset() {
 	*x = ReplyLogMsg{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_logistica_logisticaName_proto_msgTypes[3]
+		mi := &file_logisticaName_logisticaName_proto_msgTypes[5]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -234,7 +328,7 @@ func (x *ReplyLogMsg) String() string {
 func (*ReplyLogMsg) ProtoMessage() {}
 
 func (x *ReplyLogMsg) ProtoReflect() protoreflect.Message {
-	mi := &file_logistica_logisticaName_proto_msgTypes[3]
+	mi := &file_logisticaName_logisticaName_proto_msgTypes[5]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -247,7 +341,7 @@ func (x *ReplyLogMsg) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ReplyLogMsg.ProtoReflect.Descriptor instead.
 func (*ReplyLogMsg) Descriptor() ([]byte, []int) {
-	return file_logistica_logisticaName_proto_rawDescGZIP(), []int{3}
+	return file_logisticaName_logisticaName_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *ReplyLogMsg) GetRecibido() bool {
@@ -257,85 +351,100 @@ func (x *ReplyLogMsg) GetRecibido() bool {
 	return false
 }
 
-var File_logistica_logisticaName_proto protoreflect.FileDescriptor
+var File_logisticaName_logisticaName_proto protoreflect.FileDescriptor
 
-var file_logistica_logisticaName_proto_rawDesc = []byte{
-	0x0a, 0x1d, 0x6c, 0x6f, 0x67, 0x69, 0x73, 0x74, 0x69, 0x63, 0x61, 0x2f, 0x6c, 0x6f, 0x67, 0x69,
-	0x73, 0x74, 0x69, 0x63, 0x61, 0x4e, 0x61, 0x6d, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12,
-	0x0d, 0x6c, 0x6f, 0x67, 0x69, 0x73, 0x74, 0x69, 0x63, 0x61, 0x4e, 0x61, 0x6d, 0x65, 0x22, 0x2d,
-	0x0a, 0x0d, 0x50, 0x72, 0x6f, 0x70, 0x75, 0x65, 0x73, 0x74, 0x61, 0x4e, 0x61, 0x6d, 0x65, 0x12,
-	0x1c, 0x0a, 0x09, 0x50, 0x72, 0x6f, 0x70, 0x75, 0x65, 0x73, 0x74, 0x61, 0x18, 0x01, 0x20, 0x03,
-	0x28, 0x09, 0x52, 0x09, 0x70, 0x72, 0x6f, 0x70, 0x75, 0x65, 0x73, 0x74, 0x61, 0x22, 0x50, 0x0a,
-	0x12, 0x52, 0x65, 0x70, 0x6c, 0x79, 0x50, 0x72, 0x6f, 0x70, 0x75, 0x65, 0x73, 0x74, 0x61, 0x4e,
-	0x61, 0x6d, 0x65, 0x12, 0x1c, 0x0a, 0x09, 0x52, 0x65, 0x70, 0x6c, 0x79, 0x4e, 0x61, 0x6d, 0x65,
-	0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x09, 0x72, 0x65, 0x70, 0x6c, 0x79, 0x4e, 0x61, 0x6d,
-	0x65, 0x12, 0x1c, 0x0a, 0x09, 0x4e, 0x75, 0x65, 0x76, 0x61, 0x50, 0x72, 0x6f, 0x70, 0x18, 0x02,
-	0x20, 0x03, 0x28, 0x09, 0x52, 0x09, 0x6e, 0x75, 0x65, 0x76, 0x61, 0x50, 0x72, 0x6f, 0x70, 0x22,
-	0xa4, 0x01, 0x0a, 0x06, 0x4c, 0x6f, 0x67, 0x4d, 0x73, 0x67, 0x12, 0x20, 0x0a, 0x0b, 0x4e, 0x6f,
-	0x6d, 0x62, 0x72, 0x65, 0x4c, 0x69, 0x62, 0x72, 0x6f, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52,
-	0x0b, 0x6e, 0x6f, 0x6d, 0x62, 0x72, 0x65, 0x4c, 0x69, 0x62, 0x72, 0x6f, 0x12, 0x26, 0x0a, 0x0e,
-	0x43, 0x61, 0x6e, 0x74, 0x69, 0x64, 0x61, 0x64, 0x50, 0x61, 0x72, 0x74, 0x65, 0x73, 0x18, 0x02,
-	0x20, 0x01, 0x28, 0x09, 0x52, 0x0e, 0x63, 0x61, 0x6e, 0x74, 0x69, 0x64, 0x61, 0x64, 0x50, 0x61,
-	0x72, 0x74, 0x65, 0x73, 0x12, 0x14, 0x0a, 0x05, 0x50, 0x61, 0x72, 0x74, 0x65, 0x18, 0x03, 0x20,
-	0x01, 0x28, 0x09, 0x52, 0x05, 0x70, 0x61, 0x72, 0x74, 0x65, 0x12, 0x1c, 0x0a, 0x09, 0x49, 0x70,
-	0x4d, 0x61, 0x71, 0x75, 0x69, 0x6e, 0x61, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x69,
-	0x70, 0x4d, 0x61, 0x71, 0x75, 0x69, 0x6e, 0x61, 0x12, 0x1c, 0x0a, 0x09, 0x45, 0x73, 0x50, 0x72,
-	0x69, 0x6d, 0x65, 0x72, 0x6f, 0x18, 0x05, 0x20, 0x01, 0x28, 0x08, 0x52, 0x09, 0x65, 0x73, 0x50,
-	0x72, 0x69, 0x6d, 0x65, 0x72, 0x6f, 0x22, 0x29, 0x0a, 0x0b, 0x52, 0x65, 0x70, 0x6c, 0x79, 0x4c,
-	0x6f, 0x67, 0x4d, 0x73, 0x67, 0x12, 0x1a, 0x0a, 0x08, 0x52, 0x65, 0x63, 0x69, 0x62, 0x69, 0x64,
-	0x6f, 0x18, 0x01, 0x20, 0x01, 0x28, 0x08, 0x52, 0x08, 0x72, 0x65, 0x63, 0x69, 0x62, 0x69, 0x64,
-	0x6f, 0x32, 0xb2, 0x01, 0x0a, 0x14, 0x4c, 0x6f, 0x67, 0x69, 0x73, 0x74, 0x69, 0x63, 0x61, 0x4e,
-	0x61, 0x6d, 0x65, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x58, 0x0a, 0x13, 0x4d, 0x61,
-	0x6e, 0x64, 0x61, 0x72, 0x50, 0x72, 0x6f, 0x70, 0x75, 0x65, 0x73, 0x74, 0x61, 0x4e, 0x61, 0x6d,
-	0x65, 0x12, 0x1c, 0x2e, 0x6c, 0x6f, 0x67, 0x69, 0x73, 0x74, 0x69, 0x63, 0x61, 0x4e, 0x61, 0x6d,
-	0x65, 0x2e, 0x50, 0x72, 0x6f, 0x70, 0x75, 0x65, 0x73, 0x74, 0x61, 0x4e, 0x61, 0x6d, 0x65, 0x1a,
-	0x21, 0x2e, 0x6c, 0x6f, 0x67, 0x69, 0x73, 0x74, 0x69, 0x63, 0x61, 0x4e, 0x61, 0x6d, 0x65, 0x2e,
-	0x52, 0x65, 0x70, 0x6c, 0x79, 0x50, 0x72, 0x6f, 0x70, 0x75, 0x65, 0x73, 0x74, 0x61, 0x4e, 0x61,
-	0x6d, 0x65, 0x22, 0x00, 0x12, 0x40, 0x0a, 0x09, 0x4d, 0x61, 0x6e, 0x64, 0x61, 0x72, 0x4c, 0x6f,
-	0x67, 0x12, 0x15, 0x2e, 0x6c, 0x6f, 0x67, 0x69, 0x73, 0x74, 0x69, 0x63, 0x61, 0x4e, 0x61, 0x6d,
-	0x65, 0x2e, 0x4c, 0x6f, 0x67, 0x4d, 0x73, 0x67, 0x1a, 0x1a, 0x2e, 0x6c, 0x6f, 0x67, 0x69, 0x73,
-	0x74, 0x69, 0x63, 0x61, 0x4e, 0x61, 0x6d, 0x65, 0x2e, 0x52, 0x65, 0x70, 0x6c, 0x79, 0x4c, 0x6f,
-	0x67, 0x4d, 0x73, 0x67, 0x22, 0x00, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+var file_logisticaName_logisticaName_proto_rawDesc = []byte{
+	0x0a, 0x21, 0x6c, 0x6f, 0x67, 0x69, 0x73, 0x74, 0x69, 0x63, 0x61, 0x4e, 0x61, 0x6d, 0x65, 0x2f,
+	0x6c, 0x6f, 0x67, 0x69, 0x73, 0x74, 0x69, 0x63, 0x61, 0x4e, 0x61, 0x6d, 0x65, 0x2e, 0x70, 0x72,
+	0x6f, 0x74, 0x6f, 0x12, 0x0d, 0x6c, 0x6f, 0x67, 0x69, 0x73, 0x74, 0x69, 0x63, 0x61, 0x4e, 0x61,
+	0x6d, 0x65, 0x22, 0x2d, 0x0a, 0x0d, 0x50, 0x72, 0x6f, 0x70, 0x75, 0x65, 0x73, 0x74, 0x61, 0x4e,
+	0x61, 0x6d, 0x65, 0x12, 0x1c, 0x0a, 0x09, 0x50, 0x72, 0x6f, 0x70, 0x75, 0x65, 0x73, 0x74, 0x61,
+	0x18, 0x01, 0x20, 0x03, 0x28, 0x09, 0x52, 0x09, 0x70, 0x72, 0x6f, 0x70, 0x75, 0x65, 0x73, 0x74,
+	0x61, 0x22, 0x50, 0x0a, 0x12, 0x52, 0x65, 0x70, 0x6c, 0x79, 0x50, 0x72, 0x6f, 0x70, 0x75, 0x65,
+	0x73, 0x74, 0x61, 0x4e, 0x61, 0x6d, 0x65, 0x12, 0x1c, 0x0a, 0x09, 0x52, 0x65, 0x70, 0x6c, 0x79,
+	0x4e, 0x61, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x09, 0x72, 0x65, 0x70, 0x6c,
+	0x79, 0x4e, 0x61, 0x6d, 0x65, 0x12, 0x1c, 0x0a, 0x09, 0x4e, 0x75, 0x65, 0x76, 0x61, 0x50, 0x72,
+	0x6f, 0x70, 0x18, 0x02, 0x20, 0x03, 0x28, 0x09, 0x52, 0x09, 0x6e, 0x75, 0x65, 0x76, 0x61, 0x50,
+	0x72, 0x6f, 0x70, 0x22, 0x23, 0x0a, 0x07, 0x4d, 0x65, 0x6e, 0x73, 0x61, 0x6a, 0x65, 0x12, 0x18,
+	0x0a, 0x07, 0x4d, 0x65, 0x6e, 0x73, 0x61, 0x6a, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x08, 0x52,
+	0x07, 0x6d, 0x65, 0x6e, 0x73, 0x61, 0x6a, 0x65, 0x22, 0x2d, 0x0a, 0x13, 0x52, 0x65, 0x70, 0x6c,
+	0x79, 0x44, 0x69, 0x73, 0x70, 0x6f, 0x6e, 0x69, 0x62, 0x69, 0x6c, 0x69, 0x64, 0x61, 0x64, 0x12,
+	0x16, 0x0a, 0x06, 0x4c, 0x69, 0x62, 0x72, 0x6f, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x09, 0x52,
+	0x06, 0x6c, 0x69, 0x62, 0x72, 0x6f, 0x73, 0x22, 0xa4, 0x01, 0x0a, 0x06, 0x4c, 0x6f, 0x67, 0x4d,
+	0x73, 0x67, 0x12, 0x20, 0x0a, 0x0b, 0x4e, 0x6f, 0x6d, 0x62, 0x72, 0x65, 0x4c, 0x69, 0x62, 0x72,
+	0x6f, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0b, 0x6e, 0x6f, 0x6d, 0x62, 0x72, 0x65, 0x4c,
+	0x69, 0x62, 0x72, 0x6f, 0x12, 0x26, 0x0a, 0x0e, 0x43, 0x61, 0x6e, 0x74, 0x69, 0x64, 0x61, 0x64,
+	0x50, 0x61, 0x72, 0x74, 0x65, 0x73, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0e, 0x63, 0x61,
+	0x6e, 0x74, 0x69, 0x64, 0x61, 0x64, 0x50, 0x61, 0x72, 0x74, 0x65, 0x73, 0x12, 0x14, 0x0a, 0x05,
+	0x50, 0x61, 0x72, 0x74, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x70, 0x61, 0x72,
+	0x74, 0x65, 0x12, 0x1c, 0x0a, 0x09, 0x49, 0x70, 0x4d, 0x61, 0x71, 0x75, 0x69, 0x6e, 0x61, 0x18,
+	0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x69, 0x70, 0x4d, 0x61, 0x71, 0x75, 0x69, 0x6e, 0x61,
+	0x12, 0x1c, 0x0a, 0x09, 0x45, 0x73, 0x50, 0x72, 0x69, 0x6d, 0x65, 0x72, 0x6f, 0x18, 0x05, 0x20,
+	0x01, 0x28, 0x08, 0x52, 0x09, 0x65, 0x73, 0x50, 0x72, 0x69, 0x6d, 0x65, 0x72, 0x6f, 0x22, 0x29,
+	0x0a, 0x0b, 0x52, 0x65, 0x70, 0x6c, 0x79, 0x4c, 0x6f, 0x67, 0x4d, 0x73, 0x67, 0x12, 0x1a, 0x0a,
+	0x08, 0x52, 0x65, 0x63, 0x69, 0x62, 0x69, 0x64, 0x6f, 0x18, 0x01, 0x20, 0x01, 0x28, 0x08, 0x52,
+	0x08, 0x72, 0x65, 0x63, 0x69, 0x62, 0x69, 0x64, 0x6f, 0x32, 0x82, 0x02, 0x0a, 0x14, 0x4c, 0x6f,
+	0x67, 0x69, 0x73, 0x74, 0x69, 0x63, 0x61, 0x4e, 0x61, 0x6d, 0x65, 0x53, 0x65, 0x72, 0x76, 0x69,
+	0x63, 0x65, 0x12, 0x58, 0x0a, 0x13, 0x4d, 0x61, 0x6e, 0x64, 0x61, 0x72, 0x50, 0x72, 0x6f, 0x70,
+	0x75, 0x65, 0x73, 0x74, 0x61, 0x4e, 0x61, 0x6d, 0x65, 0x12, 0x1c, 0x2e, 0x6c, 0x6f, 0x67, 0x69,
+	0x73, 0x74, 0x69, 0x63, 0x61, 0x4e, 0x61, 0x6d, 0x65, 0x2e, 0x50, 0x72, 0x6f, 0x70, 0x75, 0x65,
+	0x73, 0x74, 0x61, 0x4e, 0x61, 0x6d, 0x65, 0x1a, 0x21, 0x2e, 0x6c, 0x6f, 0x67, 0x69, 0x73, 0x74,
+	0x69, 0x63, 0x61, 0x4e, 0x61, 0x6d, 0x65, 0x2e, 0x52, 0x65, 0x70, 0x6c, 0x79, 0x50, 0x72, 0x6f,
+	0x70, 0x75, 0x65, 0x73, 0x74, 0x61, 0x4e, 0x61, 0x6d, 0x65, 0x22, 0x00, 0x12, 0x40, 0x0a, 0x09,
+	0x4d, 0x61, 0x6e, 0x64, 0x61, 0x72, 0x4c, 0x6f, 0x67, 0x12, 0x15, 0x2e, 0x6c, 0x6f, 0x67, 0x69,
+	0x73, 0x74, 0x69, 0x63, 0x61, 0x4e, 0x61, 0x6d, 0x65, 0x2e, 0x4c, 0x6f, 0x67, 0x4d, 0x73, 0x67,
+	0x1a, 0x1a, 0x2e, 0x6c, 0x6f, 0x67, 0x69, 0x73, 0x74, 0x69, 0x63, 0x61, 0x4e, 0x61, 0x6d, 0x65,
+	0x2e, 0x52, 0x65, 0x70, 0x6c, 0x79, 0x4c, 0x6f, 0x67, 0x4d, 0x73, 0x67, 0x22, 0x00, 0x12, 0x4e,
+	0x0a, 0x0e, 0x44, 0x69, 0x73, 0x70, 0x6f, 0x6e, 0x69, 0x62, 0x69, 0x6c, 0x69, 0x64, 0x61, 0x64,
+	0x12, 0x16, 0x2e, 0x6c, 0x6f, 0x67, 0x69, 0x73, 0x74, 0x69, 0x63, 0x61, 0x4e, 0x61, 0x6d, 0x65,
+	0x2e, 0x4d, 0x65, 0x6e, 0x73, 0x61, 0x6a, 0x65, 0x1a, 0x22, 0x2e, 0x6c, 0x6f, 0x67, 0x69, 0x73,
+	0x74, 0x69, 0x63, 0x61, 0x4e, 0x61, 0x6d, 0x65, 0x2e, 0x52, 0x65, 0x70, 0x6c, 0x79, 0x44, 0x69,
+	0x73, 0x70, 0x6f, 0x6e, 0x69, 0x62, 0x69, 0x6c, 0x69, 0x64, 0x61, 0x64, 0x22, 0x00, 0x62, 0x06,
+	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
-	file_logistica_logisticaName_proto_rawDescOnce sync.Once
-	file_logistica_logisticaName_proto_rawDescData = file_logistica_logisticaName_proto_rawDesc
+	file_logisticaName_logisticaName_proto_rawDescOnce sync.Once
+	file_logisticaName_logisticaName_proto_rawDescData = file_logisticaName_logisticaName_proto_rawDesc
 )
 
-func file_logistica_logisticaName_proto_rawDescGZIP() []byte {
-	file_logistica_logisticaName_proto_rawDescOnce.Do(func() {
-		file_logistica_logisticaName_proto_rawDescData = protoimpl.X.CompressGZIP(file_logistica_logisticaName_proto_rawDescData)
+func file_logisticaName_logisticaName_proto_rawDescGZIP() []byte {
+	file_logisticaName_logisticaName_proto_rawDescOnce.Do(func() {
+		file_logisticaName_logisticaName_proto_rawDescData = protoimpl.X.CompressGZIP(file_logisticaName_logisticaName_proto_rawDescData)
 	})
-	return file_logistica_logisticaName_proto_rawDescData
+	return file_logisticaName_logisticaName_proto_rawDescData
 }
 
-var file_logistica_logisticaName_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
-var file_logistica_logisticaName_proto_goTypes = []interface{}{
-	(*PropuestaName)(nil),      // 0: logisticaName.PropuestaName
-	(*ReplyPropuestaName)(nil), // 1: logisticaName.ReplyPropuestaName
-	(*LogMsg)(nil),             // 2: logisticaName.LogMsg
-	(*ReplyLogMsg)(nil),        // 3: logisticaName.ReplyLogMsg
+var file_logisticaName_logisticaName_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
+var file_logisticaName_logisticaName_proto_goTypes = []interface{}{
+	(*PropuestaName)(nil),       // 0: logisticaName.PropuestaName
+	(*ReplyPropuestaName)(nil),  // 1: logisticaName.ReplyPropuestaName
+	(*Mensaje)(nil),             // 2: logisticaName.Mensaje
+	(*ReplyDisponibilidad)(nil), // 3: logisticaName.ReplyDisponibilidad
+	(*LogMsg)(nil),              // 4: logisticaName.LogMsg
+	(*ReplyLogMsg)(nil),         // 5: logisticaName.ReplyLogMsg
 }
-var file_logistica_logisticaName_proto_depIdxs = []int32{
+var file_logisticaName_logisticaName_proto_depIdxs = []int32{
 	0, // 0: logisticaName.LogisticaNameService.MandarPropuestaName:input_type -> logisticaName.PropuestaName
-	2, // 1: logisticaName.LogisticaNameService.MandarLog:input_type -> logisticaName.LogMsg
-	1, // 2: logisticaName.LogisticaNameService.MandarPropuestaName:output_type -> logisticaName.ReplyPropuestaName
-	3, // 3: logisticaName.LogisticaNameService.MandarLog:output_type -> logisticaName.ReplyLogMsg
-	2, // [2:4] is the sub-list for method output_type
-	0, // [0:2] is the sub-list for method input_type
+	4, // 1: logisticaName.LogisticaNameService.MandarLog:input_type -> logisticaName.LogMsg
+	2, // 2: logisticaName.LogisticaNameService.Disponibilidad:input_type -> logisticaName.Mensaje
+	1, // 3: logisticaName.LogisticaNameService.MandarPropuestaName:output_type -> logisticaName.ReplyPropuestaName
+	5, // 4: logisticaName.LogisticaNameService.MandarLog:output_type -> logisticaName.ReplyLogMsg
+	3, // 5: logisticaName.LogisticaNameService.Disponibilidad:output_type -> logisticaName.ReplyDisponibilidad
+	3, // [3:6] is the sub-list for method output_type
+	0, // [0:3] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
 }
 
-func init() { file_logistica_logisticaName_proto_init() }
-func file_logistica_logisticaName_proto_init() {
-	if File_logistica_logisticaName_proto != nil {
+func init() { file_logisticaName_logisticaName_proto_init() }
+func file_logisticaName_logisticaName_proto_init() {
+	if File_logisticaName_logisticaName_proto != nil {
 		return
 	}
 	if !protoimpl.UnsafeEnabled {
-		file_logistica_logisticaName_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
+		file_logisticaName_logisticaName_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*PropuestaName); i {
 			case 0:
 				return &v.state
@@ -347,7 +456,7 @@ func file_logistica_logisticaName_proto_init() {
 				return nil
 			}
 		}
-		file_logistica_logisticaName_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
+		file_logisticaName_logisticaName_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*ReplyPropuestaName); i {
 			case 0:
 				return &v.state
@@ -359,7 +468,31 @@ func file_logistica_logisticaName_proto_init() {
 				return nil
 			}
 		}
-		file_logistica_logisticaName_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
+		file_logisticaName_logisticaName_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*Mensaje); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_logisticaName_logisticaName_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ReplyDisponibilidad); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_logisticaName_logisticaName_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*LogMsg); i {
 			case 0:
 				return &v.state
@@ -371,7 +504,7 @@ func file_logistica_logisticaName_proto_init() {
 				return nil
 			}
 		}
-		file_logistica_logisticaName_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
+		file_logisticaName_logisticaName_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*ReplyLogMsg); i {
 			case 0:
 				return &v.state
@@ -388,20 +521,20 @@ func file_logistica_logisticaName_proto_init() {
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: file_logistica_logisticaName_proto_rawDesc,
+			RawDescriptor: file_logisticaName_logisticaName_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   4,
+			NumMessages:   6,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_logistica_logisticaName_proto_goTypes,
-		DependencyIndexes: file_logistica_logisticaName_proto_depIdxs,
-		MessageInfos:      file_logistica_logisticaName_proto_msgTypes,
+		GoTypes:           file_logisticaName_logisticaName_proto_goTypes,
+		DependencyIndexes: file_logisticaName_logisticaName_proto_depIdxs,
+		MessageInfos:      file_logisticaName_logisticaName_proto_msgTypes,
 	}.Build()
-	File_logistica_logisticaName_proto = out.File
-	file_logistica_logisticaName_proto_rawDesc = nil
-	file_logistica_logisticaName_proto_goTypes = nil
-	file_logistica_logisticaName_proto_depIdxs = nil
+	File_logisticaName_logisticaName_proto = out.File
+	file_logisticaName_logisticaName_proto_rawDesc = nil
+	file_logisticaName_logisticaName_proto_goTypes = nil
+	file_logisticaName_logisticaName_proto_depIdxs = nil
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -418,6 +551,7 @@ const _ = grpc.SupportPackageIsVersion6
 type LogisticaNameServiceClient interface {
 	MandarPropuestaName(ctx context.Context, in *PropuestaName, opts ...grpc.CallOption) (*ReplyPropuestaName, error)
 	MandarLog(ctx context.Context, in *LogMsg, opts ...grpc.CallOption) (*ReplyLogMsg, error)
+	Disponibilidad(ctx context.Context, in *Mensaje, opts ...grpc.CallOption) (*ReplyDisponibilidad, error)
 }
 
 type logisticaNameServiceClient struct {
@@ -446,10 +580,20 @@ func (c *logisticaNameServiceClient) MandarLog(ctx context.Context, in *LogMsg, 
 	return out, nil
 }
 
+func (c *logisticaNameServiceClient) Disponibilidad(ctx context.Context, in *Mensaje, opts ...grpc.CallOption) (*ReplyDisponibilidad, error) {
+	out := new(ReplyDisponibilidad)
+	err := c.cc.Invoke(ctx, "/logisticaName.LogisticaNameService/Disponibilidad", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // LogisticaNameServiceServer is the server API for LogisticaNameService service.
 type LogisticaNameServiceServer interface {
 	MandarPropuestaName(context.Context, *PropuestaName) (*ReplyPropuestaName, error)
 	MandarLog(context.Context, *LogMsg) (*ReplyLogMsg, error)
+	Disponibilidad(context.Context, *Mensaje) (*ReplyDisponibilidad, error)
 }
 
 // UnimplementedLogisticaNameServiceServer can be embedded to have forward compatible implementations.
@@ -461,6 +605,9 @@ func (*UnimplementedLogisticaNameServiceServer) MandarPropuestaName(context.Cont
 }
 func (*UnimplementedLogisticaNameServiceServer) MandarLog(context.Context, *LogMsg) (*ReplyLogMsg, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method MandarLog not implemented")
+}
+func (*UnimplementedLogisticaNameServiceServer) Disponibilidad(context.Context, *Mensaje) (*ReplyDisponibilidad, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Disponibilidad not implemented")
 }
 
 func RegisterLogisticaNameServiceServer(s *grpc.Server, srv LogisticaNameServiceServer) {
@@ -503,6 +650,24 @@ func _LogisticaNameService_MandarLog_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _LogisticaNameService_Disponibilidad_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Mensaje)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LogisticaNameServiceServer).Disponibilidad(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/logisticaName.LogisticaNameService/Disponibilidad",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LogisticaNameServiceServer).Disponibilidad(ctx, req.(*Mensaje))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _LogisticaNameService_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "logisticaName.LogisticaNameService",
 	HandlerType: (*LogisticaNameServiceServer)(nil),
@@ -515,7 +680,11 @@ var _LogisticaNameService_serviceDesc = grpc.ServiceDesc{
 			MethodName: "MandarLog",
 			Handler:    _LogisticaNameService_MandarLog_Handler,
 		},
+		{
+			MethodName: "Disponibilidad",
+			Handler:    _LogisticaNameService_Disponibilidad_Handler,
+		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "logistica/logisticaName.proto",
+	Metadata: "logisticaName/logisticaName.proto",
 }

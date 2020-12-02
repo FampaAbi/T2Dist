@@ -211,9 +211,8 @@ func EscribirEnNameNode(titulo string, parte int, address string, cantidad int32
     EsPrimero: esPrimero,
   })
   if estadito.GetRecibido(){
-    fmt.Println("Se registró correctamente la parte ",strconv.Itoa(parte)," del libro ",titulo," en el LOG")
+    fmt.Println("Escritura Correcta")
   }
-
 
 }
 

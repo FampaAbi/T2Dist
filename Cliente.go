@@ -14,6 +14,7 @@ import (
   "golang.org/x/net/context"
   "google.golang.org/grpc"
   pb "Tareita2/logistica"
+  pb2 "Tareita2/logisticaName"
 )
 
 func split_chunks(titulo string)(int) {
@@ -150,7 +151,6 @@ func join_chunks(titulo string,totalPartsNum int){
                 file.Close()
 }
 
-
 func visit(files *[]string) filepath.WalkFunc {
     return func(path string, info os.FileInfo, err error) error {
         if err != nil {
@@ -160,8 +160,6 @@ func visit(files *[]string) filepath.WalkFunc {
         return nil
     }
 }//https://flaviocopes.com/go-list-files/ funciones para mostrar libros a subir
-
-
 
 func remove(s []int, i int) []int {
     s[len(s)-1], s[i] = s[i], s[len(s)-1]
@@ -254,10 +252,27 @@ func mostrarMenu() {
   fmt.Println("Seleccione la acción que desea realizar:")
   fmt.Println("1. Download")
   fmt.Println("2. Upload")
-  fmt.Println("3. Salir")
+  fmt.Println("3. Ver disponibilidad ")
+  fmt.Println("4. Salir")
 }
 
 
+func verDisponibilidadLibros(conn *grpc.ClientConn) {
+  c := pb2.NewLogisticaNameServiceClient(conn)
+  estadito, _ := c.Disponibilidad(context.Background(), &pb2.Mensaje{
+    Mensaje: true,
+  })
+  libros := estadito.GetLibros()
+  if len(libros) == 0{
+    fmt.Println("No hay libros disponibles actualmente")
+  }else{
+    fmt.Println("El listado de libros disponibles es el siguiente:")
+    for index := 0; index < len(libros); index++ {
+      fmt.Println(index+1,". ",libros[index])
+    }
+  }
+
+}
 
 
 func main() {
@@ -313,9 +328,11 @@ func main() {
     } else if opcion == 1{
       fmt.Println("A descargar chicos!!")
       //leer registro name node
-    } else if opcion == 3 {
+    } else if opcion == 4 {
       inMenu = false
-    } else {
+    } else if opcion == 3 { // ver disponibilidad
+      verDisponibilidadLibros(conn)
+    }else {
       fmt.Println("Ingrese una opción válida")
     }
   }

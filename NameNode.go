@@ -19,6 +19,12 @@ import (
 )
 type Papi struct{ //struct que maneja la info general de la logistica (EL PAPI)
   libro int
+  librosDisponibles []string
+}
+
+func(s *Papi) Disponibilidad(ctx context.Context, message *pb2.Mensaje) (*pb2.ReplyDisponibilidad,error){
+  libros := s.librosDisponibles
+  return &pb2.ReplyDisponibilidad{Libros: libros}, nil
 }
 
 func remove(s []string, i int) []string { //borrar de un array https://yourbasic.org/golang/delete-element-slice/
@@ -79,6 +85,7 @@ func(s *Papi) MandarPropuestaName(ctx context.Context, propuesta *pb2.PropuestaN
 func(s *Papi) MandarLog(ctx context.Context, LogMsg *pb2.LogMsg) (*pb2.ReplyLogMsg, error) {
 
   nombre_libro := LogMsg.GetNombreLibro()
+  s.librosDisponibles = append(s.librosDisponibles,nombre_libro)
   cantidad_partes := LogMsg.GetCantidadPartes()
   parte := LogMsg.GetParte()
   ip := LogMsg.GetIpMaquina()
