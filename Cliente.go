@@ -296,7 +296,7 @@ func main() {
           Ip: address,
           Algoritmo: int32(opcionUp),
         })
-        if estadito == partes{
+        if estadito.GetStatus() == partes{
           fmt.Println("Respuesta: Se mandaron los chunks correctamente al DataNode inicial!")
         }else{
           fmt.Println("Respuesta: Se produjo un error al enviar los chunks al DataNode inicial!")
