@@ -318,6 +318,7 @@ func verDisponibilidadLibros() ([]string, []int32, []string, []string) {
     return titulos,cantidad_partes,subtitulos,direcciones
   }
   for i := 0; i < len(titulos); i++ {
+    fmt.Println("Los libros disponibles son:")
     fmt.Println(i+1,".",titulos[i])
   }
   return titulos,cantidad_partes,subtitulos,direcciones
@@ -379,7 +380,7 @@ func main() {
       if len(titulos) != 0{
         var que_libro int
         fmt.Scanln(&que_libro)
-        if que_libro < 0 || que_libro >= len(titulos) {
+        if que_libro < 0 || que_libro > len(titulos) {
           fmt.Println("Opcion inválida")
         }else {
           for i := 0; i < int(cantidad_partes[que_libro-1]); i++ {
