@@ -184,9 +184,9 @@ func join_chunks(titulo string,totalPartsNum int){
 
                   chunkBufferBytes = nil // reset or empty our buffer
 
-                  fmt.Println("Written ", n, " bytes")
+                  //fmt.Println("Written ", n, " bytes")
 
-                  fmt.Println("Recombining part [", j, "] into : ", newFileName)
+                  //fmt.Println("Recombining part [", j, "] into : ", newFileName)
                 }
                 file.Close()
 }
@@ -316,11 +316,13 @@ func verDisponibilidadLibros() ([]string, []int32, []string, []string) {
   if len(titulos) == 0 {
     fmt.Println("No hay libros disponibles actualmente")
     return titulos,cantidad_partes,subtitulos,direcciones
-  }
-  for i := 0; i < len(titulos); i++ {
+  }else{
     fmt.Println("Los libros disponibles son:")
-    fmt.Println(i+1,".",titulos[i])
+    for i := 0; i < len(titulos); i++ {
+      fmt.Println(i+1,".",titulos[i])
+    }
   }
+
   return titulos,cantidad_partes,subtitulos,direcciones
 }
 
@@ -385,6 +387,8 @@ func main() {
           fmt.Println("Opcion inválida")
         }else {
           for i := 0; i < int(cantidad_partes[que_libro-1]); i++ {
+            fmt.Println("IP: ",direcciones[i])
+            fmt.Println("Title: ",title+"_"+strconv.Itoa(i+1))
             get_chunks(direcciones[i],title+"_"+strconv.Itoa(i+1))
           }
           join_chunks(title,int(cantidad_partes[que_libro-1]))
