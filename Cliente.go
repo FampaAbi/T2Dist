@@ -380,13 +380,14 @@ func main() {
       if len(titulos) != 0{
         var que_libro int
         fmt.Scanln(&que_libro)
+        title := titulos[que_libro-1]
         if que_libro < 0 || que_libro > len(titulos) {
           fmt.Println("Opcion inválida")
         }else {
           for i := 0; i < int(cantidad_partes[que_libro-1]); i++ {
             fmt.Println("IP: ",direcciones[i])
             fmt.Println("TituloParte ",subtitulos[i])
-            get_chunks(direcciones[i],subtitulos[i])
+            get_chunks(direcciones[i],title+"_"+strconv.Itoa(i+1))
           }
         }
       }
