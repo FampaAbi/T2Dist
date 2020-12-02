@@ -257,7 +257,13 @@ func mostrarMenu() {
 }
 
 
-func verDisponibilidadLibros(conn *grpc.ClientConn) {
+func verDisponibilidadLibros() {
+  var conn *grpc.ClientConn
+  conn, err := grpc.Dial("dist64:9000", grpc.WithInsecure())
+	if err != nil {
+		log.Fatalf("did not connect: %v", err)
+	}
+	defer conn.Close()
   c := pb2.NewLogisticaNameServiceClient(conn)
   estadito, _ := c.Disponibilidad(context.Background(), &pb2.Mensaje{
     Mensaje: true,
@@ -331,7 +337,7 @@ func main() {
     } else if opcion == 4 {
       inMenu = false
     } else if opcion == 3 { // ver disponibilidad
-      verDisponibilidadLibros(conn)
+      verDisponibilidadLibros()
     }else {
       fmt.Println("Ingrese una opción válida")
     }
