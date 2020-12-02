@@ -4,6 +4,7 @@ package logistica;
 service LogisticaService {
     rpc SayHello(HelloRequest) returns (HelloReply) {}
     rpc SubirLibro (Libro) returns (SubirLibroReply) {}
+    rpc MandarChunk (SendChunk) returns (ReplySendChunk) {}
 }
 
 message Chunks{
@@ -20,6 +21,16 @@ message Libro {
 
 message SubirLibroReply {
     int32 Status = 1;
+}
+
+message SendChunk {
+    string Titulo = 1;
+    repeated bytes Chunk = 2;
+    int32 Parte = 3;
+}
+
+message ReplySendChunk {
+    bool Status = 1;
 }
 
 message HelloRequest{

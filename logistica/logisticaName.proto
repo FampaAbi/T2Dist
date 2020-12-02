@@ -3,6 +3,8 @@ package logisticaName;
 
 service LogisticaNameService {
     rpc MandarPropuestaName (PropuestaName) returns (ReplyPropuestaName) {}
+    rpc MandarLog (LogMsg) returns (ReplyLogMsg) {}
+    
 }
 
 message PropuestaName{
@@ -13,3 +15,16 @@ message ReplyPropuestaName {
     int32 ReplyName = 1;
     repeated string  NuevaProp = 2;
 }
+
+message LogMsg {
+    string NombreLibro = 1;
+    string CantidadPartes = 2;
+    string Parte = 3;
+    string IpMaquina = 4;
+    bool EsPrimero = 5;
+}
+
+message ReplyLogMsg {
+    bool Recibido = 1;
+}
+
