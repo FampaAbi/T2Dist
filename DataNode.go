@@ -41,11 +41,11 @@ func generarPropuesta(/*address string, longitud int*/) []string {
       fmt.Println("Error al conectar: DataNode ",i," no disponible" )
     }else{
       fmt.Println(response)
-      fmt.Println("DataNode", i, "en línea")
+      fmt.Println("DataNode", i, "es agregado a la propuesta")
+      retorno = append(retorno, address)
       /*if len(retorno) != longitud {
         retorno = append(retorno, address)
       }*/
-
     }
 
   }
@@ -62,7 +62,7 @@ func distribuirChunks(propuesta []string, libro [][]byte, titulo string, address
   fmt.Println("Len(libro): ",len(libro))
   fmt.Println("Len(Propuesta): ",len(propuesta))
   fmt.Println("loquesobra: ",len(libro) % len(propuesta))
-  
+
   loquesobra := len(libro) % len(propuesta)
   cuantas_cada_uno := (len(libro)-loquesobra) / len(propuesta) //cuantas para cada nodo
   index := cuantas_cada_uno * len(propuesta) //las que se reparten inicialmente
