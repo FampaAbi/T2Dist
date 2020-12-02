@@ -152,7 +152,7 @@ func join_chunks(titulo string,totalPartsNum int){
                   var chunkSize int64 = chunkInfo.Size()
                   chunkBufferBytes := make([]byte, chunkSize)
 
-                  fmt.Println("Appending at position : [", writePosition, "] bytes")
+                  //fmt.Println("Appending at position : [", writePosition, "] bytes")
                   writePosition = writePosition + chunkSize
 
                   // read into chunkBufferBytes
