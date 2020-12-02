@@ -376,7 +376,7 @@ func main() {
       }
     } else if opcion == 1{
       fmt.Println("Elija un libro a descargar:")
-      titulos,cantidad_partes,subtitulos,direcciones := verDisponibilidadLibros()
+      titulos,cantidad_partes,_,direcciones := verDisponibilidadLibros()
       if len(titulos) != 0{
         var que_libro int
         fmt.Scanln(&que_libro)
@@ -387,7 +387,7 @@ func main() {
           for i := 0; i < int(cantidad_partes[que_libro-1]); i++ {
             get_chunks(direcciones[i],title+"_"+strconv.Itoa(i+1))
           }
-          join_chunks(title,cantidad_partes[que_libro-1])
+          join_chunks(title,int(cantidad_partes[que_libro-1]))
           fmt.Println("Libro descargado correctamente")
         }
       }
