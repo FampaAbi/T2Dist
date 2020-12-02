@@ -302,7 +302,7 @@ func main() {
           Algoritmo: int32(opcionUp),
         })
         tiempo_fin := time.Since(tiempo_ini)
-        fmt.Println("Tiempo Subir Libro Centralizado: %v",tiempo_fin)
+        fmt.Println("Tiempo Subir Libro Centralizado: ",tiempo_fin)
         if estadito.GetStatus() == int32(partes){
           fmt.Println("Respuesta: Se subió correctamente el libro!")
         }else{

@@ -5,12 +5,20 @@ service LogisticaService {
     rpc SayHello(HelloRequest) returns (HelloReply) {}
     rpc SubirLibro (Libro) returns (SubirLibroReply) {}
     rpc MandarChunk (SendChunk) returns (ReplySendChunk) {}
+    rpc MandarPropuesta (Propuesta) returns (ReplyPropuesta) {}
 }
 
 message Chunks{
     string Chunk = 1;
 }
 
+message Propuesta{
+    repeated string Propuesta = 1;
+}
+
+message ReplyPropuesta {
+    bool ReplyName = 1;
+}
 message Libro {
     string Titulo = 1;
     int32 Length = 2;

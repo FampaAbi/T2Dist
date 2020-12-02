@@ -2,11 +2,12 @@ package main
 
 import (
   "os"
+  "errors"
   "strconv"
   "fmt"
   "log"
   "net"
-  //"math"
+  "math/rand"
   "io/ioutil"
   //"path/filepath"
   //"bufio"
@@ -18,6 +19,79 @@ import (
 )
 
 type Papi struct{
+}
+
+func remove(s []string, i int) []string { //borrar de un array https://yourbasic.org/golang/delete-element-slice/
+  s[len(s)-1], s[i] = s[i], s[len(s)-1]
+  return s[:len(s)-1]
+}
+
+func generarPropuestaDist(opciones []string, largo int) []string {
+  port := "9000" //
+  var retorno []string
+  for i := 0; i < largo; i++ {
+    n_random := rand.Intn(largo-i)
+    random := opciones[n_random]
+    address := "dist" + random +":"+ port
+    opciones = remove(opciones, n_random)
+    retorno = append(retorno, address)
+  }
+  fmt.Println("La nueva propuesta es: ",retorno)
+  return retorno
+}
+
+func Distribuido() ([]string) { //devuelve una prop válida
+  prop := generarPropuesta()
+  for i := 0; i < len(prop); i++ {
+    conn, err := grpc.Dial(prop[i], grpc.WithInsecure())
+    if err != nil {
+      fmt.Println("did not connect: %v", err)
+    }
+    defer conn.Close()
+    c := pb.NewLogisticaServiceClient(conn)
+    estadito, _ := c.MandarPropuesta(context.Background(), &pb.Propuesta{
+    Propuesta: prop,
+    })
+    if !estadito.GetReplyName() { //si es que rechaza la prop
+      i = 0
+      fmt.Println("Se rechazó la propuesta por el DataNode con IP '",prop[i],"', se realizará otra propuesta. ")
+      prop = generarPropuestaDist(prop, len(prop)-1)
+    }else{
+      fmt.Println("Se aceptó la propuesta por el DataNode con IP '",prop[i],"'")
+    }
+  }
+  return prop
+}
+
+func(s *Papi) MandarPropuesta(ctx context.Context, propuesta *pb.Propuesta) (*pb.ReplyPropuesta,error){
+  largo_propuesta := len(propuesta.GetPropuesta())
+  //believer := propuesta.GetPropuesta() //propuesta
+
+  if largo_propuesta != 1 {
+    if AceptaroRechazar() { //acepta
+      var temp []string
+      temp = append(temp,"")
+      return &pb.ReplyPropuesta{ReplyName: true}, nil
+    } else { //rechaza
+        return &pb.ReplyPropuesta{ReplyName: false}, nil
+    }
+  } else { // si la propuesta es de largo 1 siempre se acepta
+    var temp []string
+    temp = append(temp,"")
+    return &pb.ReplyPropuesta{ReplyName: true }, nil
+  }
+  myErr := errors.New("fallo de pana")
+  var temp []string
+  temp = append(temp,"fallo de pana")
+  return &pb.ReplyPropuesta{ReplyName: false}, myErr
+}
+
+func AceptaroRechazar() bool { //Rechaza con 10 % de prob
+  n_random:= rand.Intn(100)
+  if n_random < 10 {
+    return false
+  }
+  return true
 }
 
 func generarPropuesta(/*address string, longitud int*/) []string {
@@ -95,7 +169,7 @@ func(s *Papi) MandarChunk(ctx context.Context, SendChunk *pb.SendChunk) (*pb.Rep
   if err != nil {
 		os.Exit(1)
   }
-  ioutil.WriteFile("Partes/" + titulo, chunk, os.ModeAppend)
+  ioutil.WriteFile("Partes/" + titulo+"_"+strconv.Itoa(int(parte)), chunk, os.ModeAppend)
 
   return &pb.ReplySendChunk{Status: true}, nil
 }
@@ -145,7 +219,6 @@ func EscribirEnNameNode(titulo string, parte int, address string, cantidad int32
 
 func(s *Papi) SubirLibro(ctx context.Context, dataLibro *pb.Libro) (*pb.SubirLibroReply,error){ // recibe info del libro y sus chunks
   //longitud := 3
-  
   //fmt.Println("Respuesta Len de partes DataNode:", i)
   titulo := dataLibro.GetTitulo();
   cantidad := dataLibro.GetLength(); // cuantas partes se dividio
@@ -174,8 +247,10 @@ func(s *Papi) SubirLibro(ctx context.Context, dataLibro *pb.Libro) (*pb.SubirLib
       distribuirChunks(estadito.GetNuevaProp(), chunks, titulo, address, cantidad)
     }
 
-  }else{ // algoritmo distribuido
-
+  } else{ // algoritmo distribuido
+        prop := Distribuido()
+        fmt.Println("Se aceptó la propuesta por todos los DataNodes, se realizará:", prop)
+        distribuirChunks(prop, chunks, titulo, address, cantidad)
   }
   return &pb.SubirLibroReply{Status:cantidad}, nil //Devuelve el largo del array de chunks recibidos
 }
