@@ -13,11 +13,9 @@ import (
   "golang.org/x/net/context"
   "google.golang.org/grpc"
   pb "Tareita2/logistica"
-
-
 )
 
-func split_chunks(titulo string)(int) { //https://www.socketloop.com/tutorials/golang-recombine-chunked-files-example
+func split_chunks(titulo string)(int) {
 
         fileToBeChunked := "./Libros/"+titulo // change here! path
 
@@ -64,7 +62,7 @@ func split_chunks(titulo string)(int) { //https://www.socketloop.com/tutorials/g
                 //fmt.Println("Split to : ", fileName)
         }
         return int(totalPartsNum)
-  }
+}//https://www.socketloop.com/tutorials/golang-recombine-chunked-files-example
 
 func join_chunks(titulo string,totalPartsNum int){
     newFileName := "./JoinBooks/"+titulo
@@ -151,7 +149,7 @@ func join_chunks(titulo string,totalPartsNum int){
                 file.Close()
 }
 
-//https://flaviocopes.com/go-list-files/ funciones para mostrar libros a subir
+
 func visit(files *[]string) filepath.WalkFunc {
     return func(path string, info os.FileInfo, err error) error {
         if err != nil {
@@ -160,6 +158,66 @@ func visit(files *[]string) filepath.WalkFunc {
         *files = append(*files, info.Name())
         return nil
     }
+}//https://flaviocopes.com/go-list-files/ funciones para mostrar libros a subir
+
+
+
+func remove(s []int, i int) []int {
+    s[len(s)-1], s[i] = s[i], s[len(s)-1]
+    return s[:len(s)-1]
+}//borrar de un array https://yourbasic.org/golang/delete-element-slice/
+
+func searchAvailableNode(conn *grpc.ClientConn) string {
+  port := "9000" //
+  opciones := []int{61,62,63} //datanode
+  var inLoop = true
+  for inLoop {
+    n := len(opciones)
+    if n ==0{
+      inLoop = false
+    }else{
+      n_random := rand.Intn(n)
+      random := opciones[n_random]
+      address := "dist" + strconv.Itoa(random) +":"+ port
+      opciones = remove(opciones, n_random)
+      conn, err := grpc.Dial(address, grpc.WithInsecure())
+      if err != nil {
+        fmt.Println(err)
+      }
+      defer conn.Close()
+
+      message := pb.HelloRequest{
+        Mensaje: "Estas disponible?",
+      }
+      c := pb.NewLogisticaServiceClient(conn)
+      response, err := c.SayHello(context.Background(),&message)
+      if err!= nil{
+        fmt.Println("Error al conectar: DataNode ",random," no disponible" )
+      }else{
+        log.Printf("Response from DataNode: %s", response.Mensaje)
+        fmt.Println("DataNode", random, "en línea")
+        return address
+      }
+    }
+  }
+  return ""
+}
+
+func agruparChunks(book_name string, total_partes int) [][]byte {
+  var retorno [][]byte
+  root := "./SplitBooks/"
+  for i := 1; i < total_partes + 1; i++ {
+    file, err := os.Open(root + book_name + "_" + strconv.Itoa(i))
+	  if err != nil {
+		log.Fatal(err)
+	  }
+    content, err := ioutil.ReadAll(file)
+	  if err != nil {
+		  fmt.Println("Error!:", err)
+	  }
+    retorno = append(retorno, content) //posible error
+  }
+  return retorno
 }
 
 func librosUpload() string{
@@ -198,66 +256,6 @@ func mostrarMenu() {
   fmt.Println("3. Salir")
 }
 
-
-func remove(s []int, i int) []int { //borrar de un array https://yourbasic.org/golang/delete-element-slice/
-    s[len(s)-1], s[i] = s[i], s[len(s)-1]
-    return s[:len(s)-1]
-}
-
-func searchAvailableNode(conn *grpc.ClientConn) string {
-  port := "9000" //
-  opciones := []int{61,62,63} //datanode
-  var inLoop = true
-  for inLoop {
-    n := len(opciones)
-    if n ==0{
-      inLoop = false
-    }else{
-      n_random := rand.Intn(n)
-      random := opciones[n_random]
-      address := "dist" + strconv.Itoa(random) +":"+ port
-      opciones = remove(opciones, n_random)
-      conn, err := grpc.Dial(address, grpc.WithInsecure())
-      if err != nil {
-        fmt.Println(err)
-      }
-      defer conn.Close()
-
-      message := pb.HelloRequest{
-        Mensaje: "Estas disponible?",
-      }
-      c := pb.NewLogisticaServiceClient(conn)
-      response, err := c.SayHello(context.Background(),&message)
-      if err!= nil{
-        fmt.Println("Error al conectar: DataNode ",random," no disponible" )
-      }else{
-        log.Printf("Response from DataNode: %s", response.Mensaje)
-        fmt.Println("DataNode", random, "en línea")
-        return address
-      }
-    }
-  }
-  return ""
-}
-
-func getChunks(book_name string, total_partes int) [][]byte {
-  var retorno [][]byte
-  root := "./SplitBooks/"
-  for i := 1; i < total_partes + 1; i++ {
-    file, err := os.Open(root + book_name + "_" + strconv.Itoa(i))
-	  if err != nil {
-		log.Fatal(err)
-	  }
-    content, err := ioutil.ReadAll(file)
-	  if err != nil {
-		  fmt.Println("Error!:", err)
-	  }
-    retorno = append(retorno, content) //posible error
-  }
-  return retorno
-}
-
-
 func main() {
   //conexion
   var conn *grpc.ClientConn
@@ -272,17 +270,17 @@ func main() {
     if opcion == 2 {
       var inUpload = true
       for inUpload {
-        tituloUP := librosUpload()
+        tituloUP := librosUpload() //muestra la lista de opciones a subir
         if tituloUP == "exit" {
           inUpload = false
         } else {
-          partes := split_chunks(tituloUP)
-          lista_de_bytes := getChunks(tituloUP, partes)
+          partes := split_chunks(tituloUP) //separa el libro en chunks
+          lista_de_bytes := agruparChunks(tituloUP, partes) //mete todos los chunks en un array
 
         fmt.Printf("Qué tipo de algoritmo de exclusión mutua desea utilizar? [0: Distribuido, 1: Centralizado]:")
         fmt.Scanln(&opcionUp)
 
-        address := searchAvailableNode(conn)
+        address := searchAvailableNode(conn) //encontrar a que nodo mandarle los chunks inicialmente
         //fmt.Println(address)
         conn, err := grpc.Dial(address, grpc.WithInsecure())
         if err != nil {
@@ -298,9 +296,12 @@ func main() {
           Ip: address,
           Algoritmo: int32(opcionUp),
         })
-        fmt.Println("Respuesta:", estadito)
+        if estadito == partes{
+          fmt.Println("Respuesta: Se mandaron los chunks correctamente al DataNode inicial!")
+        }else{
+          fmt.Println("Respuesta: Se produjo un error al enviar los chunks al DataNode inicial!")
         }
-
+        }
       }
     } else if opcion == 1{
       fmt.Println("A descargar chicos!!")
