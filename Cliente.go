@@ -5,6 +5,7 @@ import (
   "strconv"
   "fmt"
   "log"
+  "math/rand"
   "math"
   "io/ioutil"
   "path/filepath"
@@ -205,14 +206,14 @@ func remove(s []int, i int) []int { //borrar de un array https://yourbasic.org/g
 
 func searchAvailableNode(conn *grpc.ClientConn) string {
   port := "9000" //
-  opciones = [61,62,63] //datanode
+  opciones := []int{61,62,63} //datanode
   var inLoop = true
   for inLoop {
     n := len(opciones)
     if n ==0{
       inLoop = false
     }else{
-      n_random= rand.Intn(n)
+      n_random := rand.Intn(n)
       random := opciones[n_random]
       address := "dist" + strconv.Itoa(random) +":"+ port
       opciones = remove(opciones, n_random)
