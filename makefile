@@ -9,3 +9,5 @@ reset:
 	 rm -r ./Partes/*
 	 rm -r ./SplitBooks/*
 	 rm -r ./ChunksDownload/*
+	 rm -fv LOG.txt
+	 > LOG.txt
