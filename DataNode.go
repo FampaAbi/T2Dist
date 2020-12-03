@@ -2,6 +2,7 @@ package main
 
 import (
   "os"
+  "time"
   "errors"
   "strconv"
   "fmt"
@@ -104,7 +105,7 @@ func(s *Papi) MandarPropuesta(ctx context.Context, propuesta *pb.Propuesta) (*pb
 
 func AceptaroRechazar() bool { //Rechaza con 10 % de prob
   n_random:= rand.Intn(100)
-  if n_random < 10 {
+  if n_random < 20 {
     return false
   }
   return true
@@ -242,6 +243,7 @@ func(s *Papi) SubirLibro(ctx context.Context, dataLibro *pb.Libro) (*pb.SubirLib
   address := dataLibro.GetIp() // ip de maquina actual
 
   if algoritmo == 1 {
+    tiempo_ini := time.Now()
     prop := generarPropuesta(/*address,longitud*/)
     conn, err := grpc.Dial("dist64:9000", grpc.WithInsecure())
     if err != nil {
@@ -261,11 +263,16 @@ func(s *Papi) SubirLibro(ctx context.Context, dataLibro *pb.Libro) (*pb.SubirLib
       fmt.Println("Se rechazó la propuesta en el NameNode, se realizará: ",estadito.GetNuevaProp())
       distribuirChunks(estadito.GetNuevaProp(), chunks, titulo, address, cantidad)
     }
+    tiempo_fin := time.Since(tiempo_ini)
+    fmt.Println("Tiempo Subir Libro Centralizado: ",tiempo_fin)
 
   } else{ // algoritmo distribuido
+        tiempo_ini := time.Now()
         prop := Distribuido()
         fmt.Println("Se aceptó la propuesta por todos los DataNodes, se realizará:", prop)
         distribuirChunks(prop, chunks, titulo, address, cantidad)
+        tiempo_fin := time.Since(tiempo_ini)
+        fmt.Println("Tiempo Subir Libro Distribuido: ",tiempo_fin)
   }
   return &pb.SubirLibroReply{Status:cantidad}, nil //Devuelve el largo del array de chunks recibidos
 }
