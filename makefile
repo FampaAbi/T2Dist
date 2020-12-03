@@ -1,6 +1,6 @@
 datanode:
-	go run logistica.go
+	go run DataNode.go
 namenode:
-	go run finanzas.go
+	go run NameNode.go
 cliente:
 	go run Cliente.go

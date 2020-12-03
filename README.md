@@ -6,16 +6,19 @@ Fabio Pazos 201773503-1
 
 Para ejecutar:
 	- Ejecutar make run en cada maquina ejecutará el código correspondiente.
-	- El cliente se puede correr en cualquier máquina asociada a los DATANODES, de la siguiente forma:
-		go run Cliente.go
+	-> 	Cliente : make cliente
+		  DataNode : make datanode
+		  NameNode : make namenode
+
+	- El cliente se puede correr en cualquier máquina asociada a los DATANODES
 	- Cabe mencionar, que no porque se haya ejecutado el cliente en una máquina no se puede ejecutar el datanode en la misma, si es que esta es accedida desde otra consola.
 
 
 Consideraciones:
 	-> 	dist61 : datanode
-		dist62 : datanode
-		dist63 : datanode
-		dist64 : namenode
+		  dist62 : datanode
+		  dist63 : datanode
+		  dist64 : namenode
 
 	- Las propuestas a nivel macro se inicializaban al consultar a los nodos si estos se encontraban activos, la respuesta
     afirmativa de esto produce que esos nodos fuesen considerados. Luego el hecho de aceptar o rechazar iba condicionado a una
