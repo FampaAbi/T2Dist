@@ -4,3 +4,8 @@ namenode:
 	go run NameNode.go
 cliente:
 	go run Cliente.go
+reset:
+	 rm -r ./JoinBooks/*
+	 rm -r ./Partes/*
+	 rm -r ./SplitBooks/*
+	 rm -r ./ChunksDownload/*
